@@ -1,0 +1,10 @@
+{"collected_at": "2026-10-27T15:50:00Z", "news": [
+ {"title": "More Racial Ability Tuning on WoW: Forever", "link": "https://www.wowhead.com/news=383602/more-racial-ability-tuning-on-wow-forever",
+  "published_at": "2026-10-27T15:47:39Z", "racial_ids": ["blood_fury", "touch_of_the_grave", "read_ley_line", "skysight"],
+  "summary": "Blizzard has added more racial ability tuning in WoW: Forever affecting Orcs, Undead, and Skyborne.",
+  "lines": ["Blood Fury’s cooldown reduced to 2 minutes (was 3 minutes).", "Touch of the Grave internal cooldown reduced to 15 seconds (was 25 seconds).", "Charged persists through death, and is removed upon entering a raid.", "Attuned persists through death, and is removed upon entering a raid."]},
+ {"title": "Racial Ability Tuning Pass for WoW: Forever", "link": "https://www.wowhead.com/news=383597/racial-ability-tuning-pass-for-wow-forever",
+  "published_at": "2026-10-26T20:38:14Z", "racial_ids": ["ruthless", "the_human_spirit", "artisans_precision", "plainsrunning", "endurance", "command", "wind_blessed", "read_ley_line", "skysight"],
+  "summary": "Blizzard has announced upcoming racial ability tuning for the launch of WoW: Forever!",
+  "lines": ["Ruthless now increases critical chance by 1% (was 2%).", "Human Spirit now increases Spirit by 10% (was 5%).", "Earth Fury (2% increased critical strike damage and healing) removed.", "Added: Artisan’s Precision - Increases hit chance with spells and attacks by 1%.", "Plainsrunning now grants 2% movement speed per stack (was 1%), for a total max increase of 60% (was 30%).", "Endurance no longer provides any modifiers beyond 5% increased Health (no hit chance or critical damage modifiers).", "Savage removed (1% increased critical strike chance).", "Command re-added, increasing Warlock and Hunter pet damage by 5%.", "Wind-Blessed Haste bonus reduced to 2% (was 3%).", "Read Leyline now increases Mana and Health regeneration by 50% (was 100%), with a 15-second duration.", "Skysight is now a 15% increased movement speed (was 10%), with a 15-second duration."]}
+]}

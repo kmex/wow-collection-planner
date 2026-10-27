@@ -1,0 +1,23 @@
+name: Dado do jogo errado ou desatualizado
+description: Racial, profissão, raça ou colecionável com valor errado
+labels: [dados]
+body:
+  - type: input
+    id: what
+    attributes:
+      label: O que está errado?
+      placeholder: "Ex.: Blood Fury mostra 3 min, mas no jogo é 2 min"
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Fonte (link)
+      description: Post da Blizzard, Wowhead, Warcraft DB ou print do jogo
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versão do app
+      placeholder: "0.1.0"

@@ -1,0 +1,7 @@
+{
+  "items": [
+    {"itemID": 7001, "name": "Transmog Simulado", "Category": "transmog", "Collected": true},
+    {"itemID": 7002, "name": "Receita Simulada", "Category": "recipe", "Collected": false, "class": "mage"},
+    "registro inválido"
+  ]
+}

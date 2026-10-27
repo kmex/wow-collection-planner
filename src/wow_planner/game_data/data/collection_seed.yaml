@@ -1,0 +1,31 @@
+# Semente mínima de colecionáveis VERIFICADOS em guias públicos.
+# O volume real (montarias, pets, transmogs, conquistas...) deve vir do importador ATT
+# ou de CSV/JSON manual — não inventamos listas de itens do Forever.
+version: "2026-10-26"
+
+_refs:
+  races: &races
+    data_source: "https://www.warcrafttavern.com/forever/guides/races/"
+    last_verified: "2026-10-26"
+  skyborne: &skyborne
+    data_source: "https://www.warcrafttavern.com/forever/guides/skyborne/"
+    last_verified: "2026-10-26"
+  nightclaw: &nightclaw
+    data_source: "https://www.warcrafttavern.com/forever/guides/nightclaw-druids-reputation/"
+    last_verified: "2026-10-26"
+
+items:
+  # Reputações de capital — Horda
+  - {external_id: "rep-orgrimmar", name: "Orgrimmar", category: reputations, faction: horde, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-darkspear", name: "Darkspear Trolls", category: reputations, faction: horde, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-undercity", name: "Undercity", category: reputations, faction: horde, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-thunder-bluff", name: "Thunder Bluff", category: reputations, faction: horde, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-windshapers", name: "Windshapers", category: reputations, faction: horde, source: "Reputação Skyborne (Horda)", priority: 2, <<: *skyborne}
+  # Reputações de capital — Aliança
+  - {external_id: "rep-stormwind", name: "Stormwind", category: reputations, faction: alliance, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-ironforge", name: "Ironforge", category: reputations, faction: alliance, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-gnomeregan", name: "Gnomeregan Exiles", category: reputations, faction: alliance, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-darnassus", name: "Darnassus", category: reputations, faction: alliance, source: "Reputação de capital", <<: *races}
+  - {external_id: "rep-high-order", name: "High Order", category: reputations, faction: alliance, source: "Reputação Skyborne (Aliança)", priority: 2, <<: *skyborne}
+  # Outras
+  - {external_id: "rep-nightclaw-druids", name: "Nightclaw Druids", category: reputations, source: "Reputação nova do Forever (facção de acesso não verificada)", priority: 2, <<: *nightclaw}

@@ -1,0 +1,20 @@
+name: Bug
+description: Algo não funciona
+labels: [bug]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: O que você fez e o que aconteceu
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Mensagem de erro (se houver)
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: Windows/Python
+      placeholder: "Windows 11, Python 3.12"

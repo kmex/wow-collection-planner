@@ -1,0 +1,162 @@
+# Raças jogáveis em World of Warcraft: Forever e combinações raça/classe.
+# Todas as entradas vêm de guias públicos (não de datamining) — revise após cada patch.
+version: "2026-10-27"
+game: "World of Warcraft: Forever (pré-lançamento, beta 1.60.x)"
+
+_refs:
+  tavern_races: &tavern_races
+    source: "https://www.warcrafttavern.com/forever/guides/races/"
+    last_verified: "2026-10-26"
+    confidence: guide
+    patch: "beta 1.60.x"
+  blizzard_skyborne: &blizzard_skyborne
+    source: "https://news.blizzard.com/en-us/article/24302071"
+    last_verified: "2026-10-26"
+    confidence: official
+    patch: "beta 1.60.x"
+
+races:
+  - id: dwarf
+    name: Dwarf
+    faction: alliance
+    classes: [hunter, paladin, priest, rogue, shaman, warrior]
+    new_class_combos: [shaman]
+    racials: [stoneform, find_treasure, artisans_precision, big_game_hunter, chastise, desperate_prayer]
+    starting_zone: Dun Morogh
+    reputation: Ironforge
+    mount_family: Ram
+    notes: "Fear Ward virou habilidade base de todo Priest no Forever; Dwarf deixou de ser obrigatório para Priest. No lançamento Earth Fury sai e entra Artisan's Precision (+1% hit)."
+    ref: *tavern_races
+
+  - id: gnome
+    name: Gnome
+    faction: alliance
+    classes: [mage, priest, rogue, warlock, warrior]
+    new_class_combos: [priest]
+    racials: [escape_artist, eureka, expansive_mind, engineering_specialization, confounding_flash, contingency_plan]
+    starting_zone: Dun Morogh
+    reputation: Gnomeregan Exiles
+    mount_family: Mechanostrider
+    ref: *tavern_races
+
+  - id: human
+    name: Human
+    faction: alliance
+    classes: [hunter, mage, paladin, priest, rogue, warlock, warrior]
+    new_class_combos: [hunter]
+    racials: [will_to_survive, perception, ruthless, the_human_spirit, divine_grace, feedback]
+    starting_zone: Elwynn Forest
+    reputation: Stormwind
+    mount_family: Horse
+    notes: "Diplomacy deixou de ser racial e virou talento Legacy universal."
+    ref: *tavern_races
+
+  - id: night_elf
+    name: Night Elf
+    faction: alliance
+    classes: [druid, hunter, priest, rogue, warrior]
+    racials: [elunes_light, shadowmeld, quickness, wisp_spirit, elunes_grace, starshards]
+    starting_zone: Teldrassil
+    reputation: Darnassus
+    mount_family: Tiger
+    ref: *tavern_races
+
+  - id: skyborne_high_order
+    name: High Order Skyborne
+    faction: alliance
+    base_race: skyborne
+    classes: [druid, hunter, mage, rogue, warrior]
+    new_class_combos: [druid, hunter, mage, rogue, warrior]
+    racials: [walk_on_air, read_ley_line, wind_blessed, elemental_insight]
+    starting_zone: Zephras Isle
+    reputation: High Order
+    mount_family: Galestrider
+    requires_purchase: true
+    notes: "ÚNICA variante Skyborne que pode ser Mage. Exige Skyborne Heroic/Epic Pack ou Warcraft Forever Collection."
+    ref: *blizzard_skyborne
+
+  - id: skyborne_windshaper
+    name: Windshaper Skyborne
+    faction: horde
+    base_race: skyborne
+    classes: [druid, hunter, rogue, shaman, warrior]
+    new_class_combos: [druid, hunter, rogue, shaman, warrior]
+    racials: [walk_on_air, skysight, wind_blessed, elemental_insight]
+    starting_zone: Zephras Isle
+    reputation: Windshapers
+    mount_family: Galestrider
+    requires_purchase: true
+    notes: "Skyborne da Horda NÃO pode ser Mage; a classe exclusiva da variante Horda é Shaman."
+    ref: *blizzard_skyborne
+
+  - id: orc
+    name: Orc
+    faction: horde
+    classes: [hunter, mage, rogue, shaman, warlock, warrior]
+    new_class_combos: [mage]
+    racials: [blood_fury, shatter_curse, command, hardiness]
+    starting_zone: Durotar
+    reputation: Orgrimmar
+    mount_family: Wolf
+    ref: *tavern_races
+
+  - id: tauren
+    name: Tauren
+    faction: horde
+    classes: [druid, hunter, shaman, warrior]
+    racials: [war_stomp, cultivation, plainsrunning, endurance]
+    starting_zone: Mulgore
+    reputation: Thunder Bluff
+    mount_family: Kodo
+    ref: *tavern_races
+
+  - id: troll
+    name: Troll
+    faction: horde
+    classes: [hunter, mage, priest, rogue, shaman, warlock, warrior]
+    new_class_combos: [warlock]
+    racials: [berserking, rapid_regeneration, beast_slaying, regeneration, hex_of_weakness, shadowguard]
+    starting_zone: Durotar
+    reputation: Darkspear Trolls
+    mount_family: Raptor
+    ref: *tavern_races
+
+  - id: undead
+    name: Undead
+    faction: horde
+    classes: [mage, paladin, priest, rogue, warlock, warrior]
+    new_class_combos: [paladin]
+    racials: [will_of_the_forsaken, cannibalize, underwater_breathing, touch_of_the_grave, dark_sacrifice, touch_of_weakness]
+    starting_zone: Tirisfal Glades
+    reputation: Undercity
+    mount_family: Skeletal Horse
+    notes: "Undead Paladin é combinação inédita e a ÚNICA opção de Paladin na Horda."
+    ref: *tavern_races
+
+classes:
+  - id: mage
+    name: Mage
+    specs: [arcane, fire, frost]
+    roles: [dps]
+    ref: *tavern_races
+  - id: priest
+    name: Priest
+    specs: [discipline, holy, shadow]
+    roles: [healer, dps]
+    ref: *tavern_races
+  - id: paladin
+    name: Paladin
+    specs: [holy, protection, retribution]
+    roles: [healer, tank, dps]
+    ref: *tavern_races
+
+# Notas gerais por classe/raça do RankedBoost (não separam PvP de PvE).
+general_grades_ref:
+  source: "https://rankedboost.com/world-of-warcraft/forever/race/"
+  last_verified: "2026-10-26"
+  confidence: community
+  patch: "página modificada em 2026-10-03"
+general_grades:
+  mage: {gnome: S, human: A, skyborne_high_order: B, undead: S, troll: A, orc: A}
+  priest: {gnome: S, night_elf: A, human: A, dwarf: B, undead: S, troll: S}
+  paladin: {human: S, dwarf: A, undead: S}

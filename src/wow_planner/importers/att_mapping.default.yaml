@@ -1,0 +1,82 @@
+# Mapeamento ATT -> wow-collection-planner
+# =========================================
+# VERIFICADO no código-fonte do AllTheThings 5.4.5 (Interface 16001 = WoW Forever 1.60.1),
+# instalado em _forever_/Interface/AddOns/AllTheThings, em 2026-10-27:
+#
+#   AllTheThings.toc  -> ## SavedVariables: ATTCharacterData, ATTAccountWideData, ...
+#   AllTheThings.lua  -> ATTCharacterData[<GUID>] = { name, realm, lvl, class, race, factionID, ... + caches }
+#   src/Modules/Collection.lua -> accountWideData[CACHE][id] = 1 (conta) | 2 (obtido por outro personagem) | 3 (conquista)
+#                                 currentCharacter[CACHE][id] = 1
+#   Nomes de CACHE: Mounts, BattlePets, Toys, Titles, Achievements, Factions, Sources, Spells, Quests
+#
+# A estrutura interna do ATT pode mudar em versões futuras. Se o import avisar "caminho não existe",
+# rode `wow-plan collection inspect-att` e ajuste aqui (copie o arquivo e aponte ATT_MAPPING_PATH).
+#
+# Semântica de cada regra:
+#   path:      caminho separado por ponto até uma tabela {id = valor}
+#   category:  categoria do app
+#   scope:     account   -> status de conta
+#              character -> `path` aponta para {<GUID> = {name=..., <sub_path>={...}}};
+#                           o campo `name` é casado com os personagens cadastrados no app
+version: 2
+verified: true
+verified_against: "AllTheThings 5.4.5 (Interface 16001)"
+last_verified: "2026-10-27"
+
+rules:
+  # ---- conta
+  - {path: "ATTAccountWideData.Mounts", category: mounts, scope: account}
+  - {path: "ATTAccountWideData.BattlePets", category: pets, scope: account}
+  - {path: "ATTAccountWideData.Toys", category: toys, scope: account}
+  - {path: "ATTAccountWideData.Titles", category: titles, scope: account}
+  - {path: "ATTAccountWideData.Achievements", category: achievements, scope: account}
+  - {path: "ATTAccountWideData.Factions", category: reputations, scope: account}   # facção no máximo (Exalted)
+  - {path: "ATTAccountWideData.Sources", category: appearances, scope: account}    # transmog (sourceID)
+  - {path: "ATTAccountWideData.Spells", category: recipes, scope: account}         # receitas e outros spells
+  # ---- por personagem
+  - {path: "ATTCharacterData", sub_path: "Mounts", category: mounts, scope: character}
+  - {path: "ATTCharacterData", sub_path: "Titles", category: titles, scope: character}
+  - {path: "ATTCharacterData", sub_path: "Factions", category: reputations, scope: character}
+  - {path: "ATTCharacterData", sub_path: "Achievements", category: achievements, scope: character}
+  - {path: "ATTCharacterData", sub_path: "Spells", category: recipes, scope: character}
+
+# Importação de arquivo exportado manualmente (CSV ou JSON).
+# Mapeia nomes de coluna externos -> campos do app. Colunas ausentes são ignoradas.
+manual_columns:
+  external_id: [external_id, id, ID, itemID, item_id, sourceID, spellID, achievementID, questID, mountID, speciesID, toyID, titleID, factionID]
+  name: [name, Name, nome, text, title]
+  category: [category, Category, categoria, type, Type]
+  status: [status, Status, collected, Collected, obtido, saved]
+  faction: [faction, Faction, faccao, facção]
+  source: [source, Source, fonte, from]
+  class_restriction: [class, Class, classe]
+  race_restriction: [race, Race, raca, raça]
+  expansion: [expansion, Expansion, expansao, expansão]
+  difficulty: [difficulty, dificuldade]
+  priority: [priority, prioridade]
+
+category_aliases:
+  mount: mounts
+  montaria: mounts
+  pet: pets
+  battlepet: pets
+  battlepets: pets
+  toy: toys
+  brinquedo: toys
+  achievement: achievements
+  conquista: achievements
+  title: titles
+  titulo: titles
+  faction: reputations
+  factions: reputations
+  reputation: reputations
+  reputacao: reputations
+  recipe: recipes
+  receita: recipes
+  spells: recipes
+  appearance: appearances
+  source: appearances
+  sources: appearances
+  transmog: transmogs
+  holiday: seasonal
+  sazonal: seasonal

@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planejador Forever</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#151829; --ink-2:#1d2138; --panel:#232843; --panel-2:#2b3152; --line:#3a4168;
+  --text:#e9e6f2; --muted:#a6a8c4; --faint:#767a9c;
+  --gold:#d9b15c; --gold-2:#f0cd7d; --arcane:#5fd0e6;
+  --horde:#d2493f; --alliance:#4b7fe0; --ok:#5fcf8d; --warn:#e9a64b; --bad:#e46a6a;
+  --r-sm:6px; --r:10px; --r-lg:16px;
+  --display:"Marcellus", "Palatino Linotype", Palatino, Georgia, serif;
+  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--ink);color:var(--text);font:15px/1.55 var(--body);
+  background-image:radial-gradient(1200px 600px at 85% -10%, rgba(95,208,230,.08), transparent 60%),
+                   radial-gradient(900px 500px at -10% 110%, rgba(217,177,92,.06), transparent 60%);
+  background-attachment:fixed}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--arcane);outline-offset:2px}
+a{color:var(--arcane)}
+
+/* ------------ shell */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;padding:28px 18px;border-right:1px solid var(--line);
+  background:rgba(21,24,41,.72);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:28px}
+.brand{font-family:var(--display);font-size:24px;line-height:1.1;color:var(--gold-2);padding:0 8px}
+.brand small{display:block;font-family:var(--body);font-size:13px;color:var(--muted);margin-top:6px;letter-spacing:.01em}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:var(--r);
+  background:transparent;color:var(--muted);cursor:pointer;text-align:left;font-weight:500}
+.nav button svg{width:18px;height:18px;flex:none;opacity:.8}
+.nav button:hover{background:var(--ink-2);color:var(--text)}
+.nav button[aria-current="page"]{background:var(--panel);color:var(--gold-2);box-shadow:inset 3px 0 0 var(--gold)}
+.side-foot{margin-top:auto;font-size:12.5px;color:var(--faint);padding:0 8px;display:grid;gap:8px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.main{padding:40px clamp(18px,4vw,56px) 80px;max-width:1180px;width:100%}
+.view{display:none}.view.active{display:block}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,3.4vw,42px);line-height:1.1;margin:0 0 8px;color:var(--text)}
+.lede{color:var(--muted);max-width:62ch;margin:0 0 32px}
+h2{font-family:var(--display);font-weight:400;font-size:22px;margin:0 0 14px}
+h3{font-size:16px;margin:0 0 6px;font-weight:600}
+
+/* ------------ controls */
+.btn{text-decoration:none;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:var(--r);border:1px solid var(--line);
+  background:var(--panel);cursor:pointer;font-weight:600;font-size:14px;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--panel-2);border-color:#4b5384}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#241b06}
+.btn.primary:hover{background:var(--gold-2)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.55;cursor:progress}
+.btn svg{width:16px;height:16px}
+.seg{display:inline-flex;background:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:7px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--panel-2);color:var(--text);box-shadow:0 1px 0 rgba(255,255,255,.05) inset}
+.seg button[data-v="horde"][aria-pressed="true"]{color:#ffd9d5;background:rgba(210,73,63,.28)}
+.seg button[data-v="alliance"][aria-pressed="true"]{color:#dbe6ff;background:rgba(75,127,224,.3)}
+.field{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.field input,.field select,.field textarea,.input{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:9px 11px;color:var(--text);font-size:14px;width:100%}
+.field textarea{min-height:70px;resize:vertical}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:22px}
+.toolbar .grow{flex:1}
+
+/* ------------ pills */
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;
+  border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.horde{border-color:rgba(210,73,63,.55);color:#ffb7b0;background:rgba(210,73,63,.12)}
+.pill.alliance{border-color:rgba(75,127,224,.6);color:#b9cdfb;background:rgba(75,127,224,.12)}
+.pill.buy{border-color:rgba(217,177,92,.6);color:var(--gold-2)}
+.pill.s-collected{color:var(--ok);border-color:rgba(95,207,141,.45)}
+.pill.s-in_progress{color:var(--arcane);border-color:rgba(95,208,230,.45)}
+.pill.s-blocked{color:var(--faint)}
+.grade{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;font-family:var(--display);font-size:17px;
+  background:var(--ink-2);border:1px solid var(--line);color:var(--muted)}
+.grade.S{color:#241b06;background:var(--gold);border-color:var(--gold)}
+.grade.A{color:var(--gold-2);border-color:rgba(217,177,92,.6)}
+
+/* ------------ quest chain (roadmap) */
+.chain{position:relative;list-style:none;margin:0;padding:0}
+.chain::before{content:"";position:absolute;left:23px;top:24px;bottom:24px;width:2px;
+  background:linear-gradient(var(--gold),rgba(95,208,230,.6) 55%,rgba(118,122,156,.3))}
+.step{position:relative;display:grid;grid-template-columns:48px 1fr;gap:22px;padding-bottom:30px}
+.node{position:relative;z-index:1;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--display);font-size:21px;background:var(--ink);border:2px solid var(--gold);color:var(--gold-2);
+  box-shadow:0 0 0 6px var(--ink)}
+.step.dim .node{border-color:var(--line);color:var(--muted)}
+.quest{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 24px;
+  border-top:3px solid var(--fc,var(--line))}
+.quest.horde{--fc:var(--horde)}.quest.alliance{--fc:var(--alliance)}
+.quest-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin-bottom:6px}
+.quest-head h2{margin:0;font-size:24px}
+.cond{color:var(--muted);font-style:italic;margin:4px 0 16px}
+.plans{display:grid;gap:18px}
+.plans.two{grid-template-columns:1fr 1fr}
+.plan h3{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:600;font-size:13.5px;margin-bottom:10px}
+.mode-row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start;padding:7px 0;border-bottom:1px dashed rgba(58,65,104,.7)}
+.mode-row:last-of-type{border-bottom:0}
+.mode-row .lbl{font-size:13px;color:var(--faint);padding-top:3px}
+.mode-row.main .lbl{color:var(--gold-2);font-weight:600}
+.races{display:flex;flex-wrap:wrap;gap:6px}
+.race{padding:3px 11px;border-radius:999px;background:var(--ink-2);border:1px solid var(--line);font-size:13.5px}
+.race:first-child{border-color:rgba(217,177,92,.7);color:var(--gold-2)}
+.mode-row:not(.main) .race:first-child{border-color:var(--line);color:var(--text)}
+.kv{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-size:13.5px;color:var(--muted)}
+.kv b{color:var(--text);font-weight:600}
+details.racials{margin-top:12px}
+details.racials summary{cursor:pointer;color:var(--arcane);font-size:13.5px;font-weight:600;list-style:none}
+details.racials summary::-webkit-details-marker{display:none}
+details.racials summary::before{content:"+ "}
+details.racials[open] summary::before{content:"– "}
+.racial-list{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.racial-list li{font-size:13.5px;color:var(--muted);padding-left:12px;border-left:2px solid rgba(95,208,230,.4)}
+.racial-list b{color:var(--text)}
+.risks{margin:16px 0 0;padding:12px 14px;list-style:none;background:rgba(233,166,75,.07);border-radius:var(--r);
+  border:1px solid rgba(233,166,75,.25);display:grid;gap:6px;font-size:13.5px;color:#f3d6ac}
+.risks li::before{content:"⚠";margin-right:8px;color:var(--warn)}
+.quest-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;
+  padding-top:14px;border-top:1px solid var(--line)}
+.mine{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px;color:var(--muted)}
+.src{font-size:12px;color:var(--faint)}
+
+/* ------------ recommend */
+.picks{display:grid;gap:14px;margin-top:8px}
+.pick{display:grid;grid-template-columns:auto 1fr;gap:18px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:20px 22px}
+.pick.first{border-color:rgba(217,177,92,.55);background:linear-gradient(180deg,rgba(217,177,92,.07),transparent 70%),var(--panel)}
+.rank{font-family:var(--display);font-size:38px;line-height:1;color:var(--faint);width:36px;text-align:center}
+.pick.first .rank{color:var(--gold-2)}
+.pick-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:6px}
+.pick-head h2{margin:0}
+.notes{display:grid;gap:10px;margin-top:18px}
+.note{padding:12px 14px;border-radius:var(--r);background:var(--ink-2);border:1px solid var(--line);font-size:14px;color:var(--muted)}
+.note.warn{border-color:rgba(233,166,75,.35);color:#f3d6ac}
+
+/* ------------ tables */
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--panel)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:13px;background:var(--ink-2);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.cls{font-family:var(--display);font-size:18px;color:var(--gold-2)}
+td .alt{display:block;color:var(--faint);font-size:12.5px}
+td.obs{color:var(--muted);max-width:40ch;font-size:13.5px}
+
+/* ------------ characters */
+.chars{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.char{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;display:grid;gap:12px;
+  border-left:4px solid var(--fc,var(--line))}
+.char.horde{--fc:var(--horde)}.char.alliance{--fc:var(--alliance)}
+.char-top{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.char-name{font-family:var(--display);font-size:22px;line-height:1.1}
+.char-sub{color:var(--muted);font-size:13.5px}
+.char-row{display:flex;gap:10px;align-items:center}
+.char-row .input{padding:6px 9px}
+.lvl{width:72px}
+.empty{padding:36px;text-align:center;border:1px dashed var(--line);border-radius:var(--r-lg);color:var(--muted)}
+.empty p{margin:0 0 14px}
+
+/* ------------ drawer */
+.scrim{position:fixed;inset:0;background:rgba(8,9,18,.6);display:none;z-index:20}
+.scrim.open{display:block}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:var(--ink-2);border-left:1px solid var(--line);
+  z-index:21;transform:translateX(100%);transition:transform .25s ease;padding:28px;overflow:auto}
+.drawer.open{transform:none}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+.hint{font-size:12.5px;color:var(--warn);min-height:1em}
+
+/* ------------ collection */
+.coll-top{display:grid;grid-template-columns:240px 1fr;gap:20px;margin-bottom:22px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px}
+.ring{display:grid;place-items:center;text-align:center}
+.ring svg{width:170px;height:170px}
+.ring-num{font-family:var(--display);font-size:34px;fill:var(--text)}
+.ring-sub{font-size:12px;fill:var(--muted)}
+.bars{display:grid;gap:12px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 92px;gap:12px;align-items:center;font-size:13.5px}
+.bar{height:8px;border-radius:99px;background:var(--ink-2);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--arcane),var(--gold));border-radius:99px}
+.bar-row .n{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.alerts{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13.5px;color:#f3d6ac}
+.item-status{padding:5px 8px;font-size:13px;width:auto}
+
+
+/* ------------ tooltip estilo jogo */
+.tt{background:linear-gradient(180deg,#0f1428,#0b0f1f);border:1px solid #4a5277;border-radius:8px;padding:12px 14px;
+  font-size:13.5px;line-height:1.45;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.tt-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.tt-name{font-weight:700;font-size:15px}
+.tt-sub,.tt-meta{color:#c9cbd8;font-size:13px}
+.tt-meta{display:flex;justify-content:space-between;gap:10px}
+.tt-req{color:#c9cbd8;font-size:12.5px}
+.tt-desc{color:#ffd100;margin-top:6px}
+.tt-aura{color:#9fe3ff;margin-top:6px;font-size:12.5px}
+.tt-foot{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:11.5px;color:var(--faint)}
+.tt-foot a{color:var(--faint)}
+.pt-note{font-size:12.5px;color:var(--muted);margin-top:6px}
+.racials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.rcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;display:grid;gap:10px;align-content:start}
+.rcard-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.score{font-size:12px;color:var(--muted)}
+.score b{color:var(--gold-2)}
+.changes{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13.5px}
+.changes li{padding:10px 12px;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r)}
+.changes del{color:var(--bad);text-decoration:line-through}
+.changes ins{color:var(--ok);text-decoration:none}
+.update-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:16px 18px;margin-bottom:22px;background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--r-lg)}
+.update-bar .grow{flex:1;min-width:220px;color:var(--muted);font-size:14px}
+.spin{width:16px;height:16px;border:2px solid rgba(0,0,0,.25);border-top-color:#241b06;border-radius:50%;animation:spin .8s linear infinite;display:none}
+.btn.busy .spin{display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+
+.notice{margin-top:8px;padding:9px 11px;border-radius:8px;font-size:12.5px;line-height:1.45;background:rgba(233,166,75,.1);border:1px solid rgba(233,166,75,.4);color:#f6d9ae}
+.notice b{color:#ffc66b}
+.notice.removed{background:rgba(228,106,106,.1);border-color:rgba(228,106,106,.45);color:#f7c4c4}
+.notice a,.bnote a{color:inherit}
+.bnotes{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.bnote{font-size:12.5px;color:var(--muted);padding:7px 10px;border-left:2px solid #3b82f6;background:rgba(59,130,246,.06);border-radius:0 6px 6px 0}
+.bnote .d{color:#9db9f2;font-weight:600;margin-right:6px;white-space:nowrap}
+.bnote.old{opacity:.7}
+.wh{font-size:11.5px;margin-top:6px;color:var(--faint)}
+.wh.diff{color:var(--warn)}
+.sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.chip{border:1px solid var(--line);background:var(--ink-2);color:var(--muted);padding:7px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13.5px}
+.chip[aria-pressed="true"]{color:var(--gold-2);border-color:rgba(217,177,92,.7);background:rgba(217,177,92,.12)}
+.prof-pairs{display:grid;gap:14px;margin-bottom:22px}
+.prof-pair{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 20px;display:grid;grid-template-columns:44px 1fr;gap:14px}
+.prof-pair.first{border-color:rgba(217,177,92,.6)}
+.prof-pair .rank{font-size:22px;font-weight:800;color:var(--gold-2)}
+.prof-pair h2{margin:0 0 6px;font-size:19px}
+.prof-pair ul{margin:6px 0 0;padding-left:18px}
+.prof-pair .cav{color:var(--warn);font-size:13.5px}
+.prof-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.prof{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 18px;font-size:14px}
+.prof h3{margin:0 0 4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.prof ul{margin:8px 0;padding-left:18px}
+.prof .camp{font-size:13px;color:var(--muted);display:grid;gap:2px;margin-top:8px}
+.prof .camp b{color:var(--text)}
+.prof.hl{border-color:rgba(217,177,92,.6)}
+.src-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px;font-size:13.5px;display:grid;gap:4px}
+.src-card h3{display:flex;align-items:center;gap:8px;margin:0;font-size:15px}
+.src-card .when{color:var(--text);font-weight:600}
+.src-card .sub{color:var(--muted);font-size:12.5px}
+.news{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.news > li{padding:12px 14px;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r)}
+.news .d{font-size:12.5px;color:var(--gold-2);font-weight:600}
+.news a{color:var(--text);font-weight:600;text-decoration:none}
+.news a:hover{text-decoration:underline}
+.news ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px;list-style:disc}
+.news ul li{padding:2px 0}
+/* ------------ toast */
+.toasts{position:fixed;bottom:22px;right:22px;display:grid;gap:10px;z-index:40}
+.toast{background:var(--panel-2);border:1px solid var(--line);border-left:4px solid var(--ok);padding:12px 16px;border-radius:var(--r);
+  max-width:380px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.toast.err{border-left-color:var(--bad)}
+
+/* ------------ responsive */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:16px;gap:12px}
+  .nav{flex-direction:row;flex-wrap:wrap}
+  .side-foot{display:none}
+  .plans.two,.coll-top{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:110px 1fr 70px}
+  .step{grid-template-columns:34px 1fr;gap:12px}
+  .node{width:34px;height:34px;font-size:16px}
+  .chain::before{left:16px}
+  .quest{padding:18px}
+  .mode-row{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">Planejador Forever<small>Mage primeiro, coleção completa depois</small></div>
+    <nav class="nav" aria-label="Seções">
+      <button data-view="plano" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="5" r="2.2"/><circle cx="18" cy="12" r="2.2"/><circle cx="6" cy="19" r="2.2"/><path d="M8 6l8 5M16 13l-8 5"/></svg>Seu plano</button>
+      <button data-view="racas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>Melhor raça</button>
+      <button data-view="racials"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Racials</button>
+      <button data-view="profissoes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.5 4.5l5 5-9.5 9.5H5v-5z"/><path d="M12.5 6.5l5 5"/></svg>Profissões</button>
+      <button data-view="decisao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg>Tabela de decisão</button>
+      <button data-view="personagens"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5 7-5s5.8 1.4 7 5"/></svg>Personagens</button>
+      <button data-view="colecao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7l8-4 8 4-8 4z"/><path d="M4 12l8 4 8-4M4 17l8 4 8-4"/></svg>Coleção</button>
+    </nav>
+    <div class="side-foot">
+      <div id="att-status"><span class="dot" style="background:var(--faint)"></span>ATT: verificando…</div>
+      <div id="data-version"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- PLANO -->
+    <section class="view active" id="view-plano">
+      <h1>Seu caminho no Forever</h1>
+      <p class="lede">Quatro etapas, na ordem em que você vai criar os personagens. Cada uma mostra a melhor raça para o objetivo principal (destacado), as racials que justificam a escolha e o que você perde ou arrisca.</p>
+      <ol class="chain" id="chain"></ol>
+    </section>
+
+    <!-- RAÇAS -->
+    <section class="view" id="view-racas">
+      <h1>Qual raça escolher?</h1>
+      <p class="lede">Escolha classe, facção e objetivo. A nota geral vem dos guias públicos; a ordem para PvP, PvE ou coleção é análise do app a partir das racials.</p>
+      <div class="toolbar">
+        <div class="seg" id="seg-class" role="group" aria-label="Classe">
+          <button data-v="mage" aria-pressed="true">Mage</button><button data-v="priest" aria-pressed="false">Priest</button><button data-v="paladin" aria-pressed="false">Paladin</button>
+        </div>
+        <div class="seg" id="seg-faction" role="group" aria-label="Facção">
+          <button data-v="horde" aria-pressed="true">Horda</button><button data-v="alliance" aria-pressed="false">Aliança</button>
+        </div>
+        <div class="seg" id="seg-mode" role="group" aria-label="Objetivo">
+          <button data-v="pvp" aria-pressed="true">PvP</button><button data-v="pve" aria-pressed="false">PvE</button><button data-v="collection" aria-pressed="false">Coleção</button>
+        </div>
+      </div>
+      <div id="rec-out"></div>
+    </section>
+
+    <!-- RACIALS -->
+    <section class="view" id="view-racials">
+      <h1>Racials</h1>
+      <p class="lede">Tooltip oficial em inglês (Warcraft DB), conferido com o Wowhead, e cada mudança anunciada pela Blizzard no fórum oficial, com data. Quando a Blizzard anuncia algo que o tooltip ainda não mostra, aparece um aviso em laranja.</p>
+      <div class="update-bar">
+        <div class="grow" id="upd-info">Carregando…</div>
+        <button class="btn primary" id="btn-upd"><span class="spin"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>Atualizar agora</button>
+      </div>
+      <div class="sources" id="sources"></div>
+      <div class="card" id="changes-card" style="margin-bottom:22px;display:none"><h2>O que mudou nos tooltips</h2><ul class="changes" id="changes"></ul></div>
+      <div class="toolbar">
+        <div class="seg" id="seg-rclass" role="group" aria-label="Classe">
+          <button data-v="mage" aria-pressed="true">Mage</button><button data-v="priest" aria-pressed="false">Priest</button><button data-v="paladin" aria-pressed="false">Paladin</button><button data-v="" aria-pressed="false">Todas</button>
+        </div>
+        <select class="input" id="r-race" style="width:auto"><option value="">Todas as raças</option></select>
+        <input class="input" id="r-q" placeholder="Buscar racial (ex.: stun, mana)" style="max-width:260px">
+      </div>
+      <div class="racials-grid" id="racials"></div>
+      <div class="card" id="news-card" style="margin-top:26px;display:none"><h2>Notícias sobre racials (Wowhead)</h2><ul class="news" id="news"></ul></div>
+    </section>
+
+    <!-- PROFISSÕES -->
+    <section class="view" id="view-profissoes">
+      <h1>Guia de profissões</h1>
+      <p class="lede">Marque o que você gosta de craftar. O app sugere as melhores duplas de profissões primárias (você tem 2, mais Cooking, First Aid e Fishing), mostra o que mudou no Forever e os buffs de acampamento de cada uma.</p>
+      <div class="chips" id="p-likes"></div>
+      <div class="toolbar">
+        <div class="seg" id="seg-pclass" role="group" aria-label="Classe">
+          <button data-v="mage" aria-pressed="true">Mage</button><button data-v="priest" aria-pressed="false">Priest</button><button data-v="paladin" aria-pressed="false">Paladin</button><button data-v="" aria-pressed="false">Qualquer</button>
+        </div>
+        <div class="seg" id="seg-pgoal" role="group" aria-label="Objetivo">
+          <button data-v="" aria-pressed="true">Sem foco</button><button data-v="pvp" aria-pressed="false">PvP</button><button data-v="pve" aria-pressed="false">PvE</button><button data-v="collection" aria-pressed="false">Coleção</button>
+        </div>
+      </div>
+      <div id="p-out"></div>
+      <h2 style="margin-top:28px">Todas as profissões</h2>
+      <div class="prof-grid" id="p-all"></div>
+      <div class="src" id="p-src" style="margin-top:16px"></div>
+    </section>
+
+    <!-- DECISÃO -->
+    <section class="view" id="view-decisao">
+      <h1>Tabela de decisão</h1>
+      <p class="lede">A melhor raça de cada classe por facção e objetivo, com a segunda opção logo abaixo.</p>
+      <div class="table-wrap"><table id="dec-table"></table></div>
+    </section>
+
+    <!-- PERSONAGENS -->
+    <section class="view" id="view-personagens">
+      <h1>Personagens</h1>
+      <p class="lede">Cadastre com o mesmo nome do jogo: é assim que o import do All The Things sabe de quem é cada coleção.</p>
+      <div class="toolbar"><div class="grow"></div><button class="btn primary" id="btn-new-char"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Novo personagem</button></div>
+      <div id="chars"></div>
+    </section>
+
+    <!-- COLEÇÃO -->
+    <section class="view" id="view-colecao">
+      <h1>Coleção</h1>
+      <p class="lede">Progresso da conta inteira. Itens de outra facção ou classe contam como bloqueados no progresso de cada personagem e saem da conta do 100%.</p>
+      <div class="toolbar">
+        <button class="btn primary" id="btn-import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Importar do All The Things</button>
+        <a class="btn ghost" href="/api/collection/export?format=csv">Exportar CSV</a>
+        <a class="btn ghost" href="/api/collection/export?format=json">Exportar JSON</a>
+      </div>
+      <div class="coll-top">
+        <div class="card ring" id="ring"></div>
+        <div class="card"><h2>Por categoria</h2><div class="bars" id="bars"></div></div>
+      </div>
+      <div class="card" id="per-char" style="margin-bottom:22px"></div>
+      <div class="card" id="alerts-card" style="margin-bottom:22px;display:none"><h2>Itens que nenhum personagem seu consegue pegar</h2><ul class="alerts" id="alerts"></ul></div>
+      <h2>Itens</h2>
+      <div class="toolbar">
+        <input class="input" id="f-q" placeholder="Buscar por nome ou ID" style="max-width:260px">
+        <select class="input" id="f-cat" style="width:auto"><option value="">Todas as categorias</option></select>
+        <select class="input" id="f-fac" style="width:auto"><option value="">Ambas as facções</option><option value="horde">Horda</option><option value="alliance">Aliança</option></select>
+        <select class="input" id="f-status" style="width:auto"><option value="missing">Faltando</option><option value="collected">Obtidos</option><option value="blocked">Bloqueados</option><option value="all">Todos</option></select>
+      </div>
+      <div class="table-wrap"><table id="items"></table></div>
+    </section>
+  </main>
+</div>
+
+<!-- Drawer novo personagem -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawer-title">
+  <h2 id="drawer-title">Novo personagem</h2>
+  <form id="char-form" class="form-grid" autocomplete="off">
+    <label class="field full">Nome no jogo<input name="name" required maxlength="48"></label>
+    <label class="field">Facção<select name="faction"><option value="horde">Horda</option><option value="alliance">Aliança</option></select></label>
+    <label class="field">Classe<select name="class_name"></select></label>
+    <label class="field full">Raça<select name="race"></select></label>
+    <div class="hint full" id="race-hint"></div>
+    <label class="field">Objetivo<select name="goal"><option value="pvp">PvP</option><option value="pve">PvE</option><option value="collection">Coleção</option></select></label>
+    <label class="field">Spec<input name="spec" placeholder="frost, holy…"></label>
+    <label class="field">Nível<input name="level" type="number" min="1" max="60" value="1"></label>
+    <label class="field">Ordem de criação<input name="creation_order" type="number" min="1" value="1"></label>
+    <label class="field">Prioridade<select name="priority"><option value="1">1 · mais alta</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5 · mais baixa</option></select></label>
+    <label class="field">Reino<input name="realm"></label>
+    <label class="field full">Notas<textarea name="notes"></textarea></label>
+    <div class="full" style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+      <button type="button" class="btn ghost" id="btn-cancel">Cancelar</button>
+      <button type="submit" class="btn primary">Salvar personagem</button>
+    </div>
+  </form>
+</aside>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const h = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const FAC = {horde:"Horda", alliance:"Aliança"};
+const MODE = {pvp:"PvP", pve:"PvE", collection:"Coleção"};
+const CLS = {mage:"Mage", priest:"Priest", paladin:"Paladin", warrior:"Warrior", rogue:"Rogue", hunter:"Hunter", shaman:"Shaman", warlock:"Warlock", druid:"Druid"};
+const ST = {planned:"Planejado", in_progress:"Em progresso", done:"Concluído"};
+const IST = {missing:"Não obtido", collected:"Obtido", in_progress:"Em progresso", blocked:"Bloqueado"};
+const CAT = {mounts:"Montarias", pets:"Pets", toys:"Brinquedos", transmogs:"Transmogs", appearances:"Aparências", achievements:"Conquistas",
+  meta_achievements:"Metaconquistas", titles:"Títulos", reputations:"Reputações", reputation_mounts:"Montarias de reputação",
+  recipes:"Receitas", seasonal:"Sazonais", other:"Outros", geral:"Geral"};
+let META = null;
+
+async function api(path, opts={}) {
+  const res = await fetch(path, {headers:{"Content-Type":"application/json"}, ...opts});
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Erro ${res.status}`);
+  return data;
+}
+function toast(msg, err=false) {
+  const t = document.createElement("div"); t.className = "toast" + (err ? " err" : ""); t.textContent = msg;
+  $("#toasts").append(t); setTimeout(() => t.remove(), err ? 7000 : 3500);
+}
+const facPill = f => `<span class="pill ${f}">${FAC[f] || h(f)}</span>`;
+
+/* ---------------- tooltip (texto oficial em inglês) */
+const fmtDate = (iso, withTime = true) => {
+  if (!iso) return "—";
+  const d = new Date(iso.length <= 10 ? iso + "T12:00:00" : iso);
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString("pt-BR") + (withTime && iso.length > 10 ? " " + d.toLocaleTimeString("pt-BR", {hour: "2-digit", minute: "2-digit"}) : "");
+};
+function noteDate(n) {
+  const edited = n.edited_at && n.edited_at.slice(0, 10) !== (n.posted_at || "").slice(0, 10);
+  return `${fmtDate(n.posted_at, false)}${edited ? ` <span title="post editado">(editado ${fmtDate(n.edited_at, false)})</span>` : ""}`;
+}
+function noticeBox(n) {
+  if (!n) return "";
+  const removed = n.tooltip_status === "removed";
+  const what = removed ? "Removida no lançamento" : `Mudança anunciada: ${h(n.change?.old)} → <b>${h(n.change?.new)}</b> (o tooltip ainda mostra o valor antigo)`;
+  return `<div class="notice ${removed ? "removed" : ""}">⚠ <b>${what}</b><br>Blizzard em ${noteDate(n)}: “${h(n.text)}” <a href="${h(n.url)}" target="_blank" rel="noopener">post</a></div>`;
+}
+function notesList(notes, max = 3) {
+  if (!notes?.length) return "";
+  return `<ul class="bnotes">${notes.slice(0, max).map((n, i) => `<li class="bnote ${i ? "old" : ""}"><span class="d">${noteDate(n)}</span>${h(n.text)} <a href="${h(n.url)}" target="_blank" rel="noopener">fonte</a></li>`).join("")}</ul>`;
+}
+function tooltip(en, ptFallback, opts = {}) {
+  if (!en || en.missing) {
+    return `<div>${en?.notice ? noticeBox(en.notice) : ""}<div class="pt-note">${en ? "Ainda sem tooltip no Warcraft DB (racial nova). " : ""}${h(ptFallback || "")}</div>${en ? notesList(en.notes) : ""}</div>`;
+  }
+  const right = en.cooldown ? `${h(en.cooldown)} cooldown` : "";
+  const req = [en.classes?.length ? "Requires " + en.classes.map(c => CLS[c] || c).join(", ") : "", en.required_level && en.required_level !== "1" ? "Requires Level " + h(en.required_level) : ""].filter(Boolean);
+  const wh = en.wowhead;
+  return `<div><div class="tt">
+    <div class="tt-head"><span class="tt-name">${h(en.name)}</span><span class="tt-sub">${h(en.subtitle || "")}</span></div>
+    ${en.cost || en.range ? `<div class="tt-meta"><span>${h(en.cost || "")}</span><span>${h(en.range || "")}</span></div>` : ""}
+    ${en.cast || right ? `<div class="tt-meta"><span>${h(en.cast || "")}</span><span>${right}</span></div>` : ""}
+    ${req.map(r => `<div class="tt-req">${r}</div>`).join("")}
+    ${en.description ? `<div class="tt-desc">${h(en.description)}</div>` : ""}
+    ${en.aura ? `<div class="tt-aura">Aura: ${h(en.aura)}</div>` : ""}
+    <div class="tt-foot"><span>Spell ID <a href="${h(en.url || "")}" target="_blank" rel="noopener">${en.spell_id}</a></span><span>Warcraft DB · ${en.method === "seed" ? "coletado" : "atualizado"} ${fmtDate(en.fetched_at)}</span></div>
+    ${wh ? `<div class="wh ${wh.same ? "" : "diff"}">${wh.same ? "✓ Wowhead confere" : `≠ Wowhead diz: “${h(wh.description)}”`} · ${fmtDate(wh.fetched_at)} · <a href="${h(wh.url)}" target="_blank" rel="noopener">abrir</a></div>` : ""}
+  </div>${noticeBox(en.notice)}${opts.notes ? notesList(en.notes) : ""}${ptFallback ? `<div class="pt-note">Resumo: ${h(ptFallback)}</div>` : ""}</div>`;
+}
+
+/* ---------------- navegação */
+const loaders = {plano: loadRoadmap, racas: loadRec, racials: loadRacials, profissoes: loadProfs, decisao: loadDecision, personagens: loadChars, colecao: loadCollection};
+function go(view) {
+  $$(".nav button").forEach(b => b.dataset.view === view ? b.setAttribute("aria-current","page") : b.removeAttribute("aria-current"));
+  $$(".view").forEach(v => v.classList.toggle("active", v.id === "view-" + view));
+  history.replaceState(null, "", "#" + view);
+  loaders[view]().catch(e => toast(e.message, true));
+}
+$$(".nav button").forEach(b => b.addEventListener("click", () => go(b.dataset.view)));
+window.addEventListener("hashchange", () => { const v = location.hash.slice(1); if (loaders[v] && !$("#view-" + v).classList.contains("active")) go(v); });
+
+/* ---------------- plano */
+async function loadRoadmap() {
+  const steps = await api("/api/roadmap");
+  $("#chain").innerHTML = steps.map(s => {
+    const two = s.plans.length > 1;
+    const plans = s.plans.map(p => `
+      <div class="plan">
+        ${two ? `<h3>${facPill(p.faction)}</h3>` : ""}
+        ${["pvp","pve","collection"].filter(m => p.best_by_mode[m]).map(m => `
+          <div class="mode-row ${m === s.mode ? "main" : ""}">
+            <div class="lbl">${MODE[m]}${m === s.mode ? " · foco" : ""}</div>
+            <div class="races">${p.best_by_mode[m].map(r => `<span class="race">${h(r)}</span>`).join("")}</div>
+          </div>`).join("")}
+        <div class="kv"><span>Spec inicial <b>${h(p.starting_spec || "—")}</b></span><span>Profissões <b>${h(p.professions.join(", ") || "—")}</b></span></div>
+        ${p.key_racials.length ? `<details class="racials"><summary>Racials que pesam na escolha</summary>
+          <div class="racial-list" style="display:grid;gap:10px;margin-top:10px">${p.key_racials.map(r => tooltip(r.en, r.en ? "" : r.effect)).join("")}</div></details>` : ""}
+      </div>`).join("");
+    const mine = s.existing.length
+      ? `<div class="mine">Seus personagens: ${s.existing.map(c => `<span class="pill ${c.faction}">${h(c.name)} · nv ${c.level} · ${h(c.status_label)}</span>`).join("")}</div>`
+      : `<div class="mine">Nenhum personagem cadastrado para esta etapa.</div>`;
+    return `<li class="step ${s.existing.length ? "" : "dim"}">
+      <div class="node">${s.order}</div>
+      <article class="quest ${s.faction}">
+        <div class="quest-head"><h2>${h(s.title)}</h2>${facPill(s.faction)}</div>
+        ${s.condition ? `<p class="cond">${h(s.condition)}</p>` : ""}
+        <div class="plans ${two ? "two" : ""}">${plans}</div>
+        ${s.risks.length ? `<ul class="risks">${s.risks.map(r => `<li>${h(r)}</li>`).join("")}</ul>` : ""}
+        <div class="quest-foot">${mine}
+          <button class="btn" data-add="${s.class_id}|${s.faction}|${s.mode}|${s.order}">Cadastrar personagem desta etapa</button></div>
+      </article></li>`;
+  }).join("");
+  $$("[data-add]").forEach(b => b.addEventListener("click", () => {
+    const [cls, fac, mode, order] = b.dataset.add.split("|"); openDrawer({class_name: cls, faction: fac, goal: mode, creation_order: order});
+  }));
+}
+
+/* ---------------- recomendação */
+const recState = {class:"mage", faction:"horde", mode:"pvp"};
+["class","faction","mode"].forEach(k => $$(`#seg-${k} button`).forEach(b => b.addEventListener("click", () => {
+  recState[k] = b.dataset.v; $$(`#seg-${k} button`).forEach(x => x.setAttribute("aria-pressed", x === b)); loadRec().catch(e => toast(e.message, true));
+})));
+async function loadRec() {
+  const q = new URLSearchParams(recState);
+  let r;
+  try { r = await api("/api/recommend?" + q); }
+  catch (e) { $("#rec-out").innerHTML = `<div class="empty"><p>${h(e.message)}</p></div>`; return; }
+  $("#rec-out").innerHTML = `
+    <div class="picks">${r.picks.map((p, i) => `
+      <article class="pick ${i === 0 ? "first" : ""}">
+        <div class="rank">${p.rank}</div>
+        <div>
+          <div class="pick-head"><h2>${h(p.race_name)}</h2>
+            ${p.grade ? `<span class="grade ${h(p.grade)}" title="Nota geral nos guias">${h(p.grade)}</span>` : ""}
+            ${p.requires_purchase ? `<span class="pill buy">Exige pack Skyborne</span>` : ""}</div>
+          <p style="margin:0 0 8px">${h(p.reason)}</p>
+          ${p.racials.length ? `<div class="racials-grid" style="margin-top:10px">${p.racials.map(x => tooltip(x.en, x.effect)).join("")}</div>` : ""}
+        </div></article>`).join("")}</div>
+    <div class="kv" style="margin-top:18px"><span>Spec inicial <b>${h(r.starting_spec || "—")}</b></span><span>Profissões <b>${h(r.professions.join(", "))}</b></span></div>
+    <div class="notes">
+      ${r.warnings.map(w => `<div class="note warn">${h(w)}</div>`).join("")}
+      ${r.notes ? `<div class="note">${h(r.notes)}</div>` : ""}
+      <div class="src">Notas gerais: ${h(META?.grades_source || "")}. Ordem por objetivo: ${h(r.source)} (verificado em ${h(r.last_verified)}).</div>
+    </div>`;
+}
+
+/* ---------------- profissões */
+const pState = {likes: ["bags", "elixirs"], class: "mage", goal: ""};
+try { const saved = JSON.parse(localStorage.getItem("wp-prof") || "null"); if (saved) Object.assign(pState, saved); } catch (e) {}
+let PROFS = null;
+[["pclass", "class"], ["pgoal", "goal"]].forEach(([id, k]) => $$(`#seg-${id} button`).forEach(b => b.addEventListener("click", () => {
+  pState[k] = b.dataset.v; renderProfSegs(); loadProfRec().catch(e => toast(e.message, true));
+})));
+function renderProfSegs() {
+  $$("#seg-pclass button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === pState.class));
+  $$("#seg-pgoal button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === pState.goal));
+  try { localStorage.setItem("wp-prof", JSON.stringify(pState)); } catch (e) {}
+}
+async function loadProfs() {
+  if (!PROFS) PROFS = await api("/api/professions");
+  $("#p-likes").innerHTML = PROFS.interests.map(i => `<button class="chip" data-like="${i.id}" aria-pressed="${pState.likes.includes(i.id)}">${h(i.label)}</button>`).join("");
+  $$("#p-likes .chip").forEach(c => c.addEventListener("click", () => {
+    const id = c.dataset.like;
+    pState.likes = pState.likes.includes(id) ? pState.likes.filter(x => x !== id) : [...pState.likes, id];
+    c.setAttribute("aria-pressed", pState.likes.includes(id)); renderProfSegs(); loadProfRec().catch(e => toast(e.message, true));
+  }));
+  renderProfSegs();
+  const srcs = new Map();
+  PROFS.professions.forEach(p => p.sources.forEach(s => srcs.set(s.url, s)));
+  $("#p-src").innerHTML = `Dados verificados em ${fmtDate(PROFS.version + "T12:00:00Z", false)} · fontes: ` + [...srcs.values()].map(s => /^https?:/.test(s.url) ? `<a href="${h(s.url.split(" ")[0])}" target="_blank" rel="noopener">${h(s.url.replace(/^https?:\/\/(www\.)?/, "").split("/")[0])}</a> (${h(s.confidence)})` : `${h(s.url)}`).join(" · ") + ". Notas de encaixe por classe/objetivo são análise do app.";
+  await loadProfRec();
+}
+function profCard(p, hl) {
+  const tierNames = {t1: "Básico", t2: "Journeyman", t3: "Expert"};
+  return `<article class="prof ${hl ? "hl" : ""}">
+    <h3>${h(p.name)} <span class="pill">${p.kind === "primary" ? "primária" : "secundária"}</span><span class="pill">${p.role === "gathering" ? "coleta" : "craft"}</span></h3>
+    ${p.crafts_labels.length && p.role !== "gathering" ? `<div class="src">Faz: ${h(p.crafts_labels.join(", "))}${p.gatherer ? ` · material: ${h(p.gatherer[0].toUpperCase() + p.gatherer.slice(1))}` : ""}</div>` : ""}
+    <ul>${p.forever.map(f => `<li>${h(f)}</li>`).join("")}</ul>
+    <div class="camp">${Object.entries(p.camp || {}).map(([t, v]) => `<span><b>Camp ${tierNames[t] || t}:</b> ${h(v)}</span>`).join("")}</div>
+  </article>`;
+}
+async function loadProfRec() {
+  const out = $("#p-out");
+  const picked = new Set();
+  if (!pState.likes.length) {
+    out.innerHTML = `<div class="empty"><p>Marque pelo menos uma coisa que você gosta de craftar.</p></div>`;
+  } else {
+    const r = await api("/api/professions/recommend?" + new URLSearchParams({likes: pState.likes.join(","), class: pState.class, goal: pState.goal}));
+    r.pairs[0]?.ids.forEach(i => picked.add(i));
+    out.innerHTML = `<div class="prof-pairs">${r.pairs.map((p, i) => `
+      <article class="prof-pair ${i === 0 ? "first" : ""}"><div class="rank">${i + 1}</div><div>
+        <h2>${p.professions.map(h).join(" + ")}</h2>
+        <ul>${p.reasons.map(x => `<li>${h(x)}</li>`).join("")}</ul>
+        ${p.uncovered.length ? `<div class="src" style="margin-top:6px">Não cobre: ${h(p.uncovered.join(", "))}</div>` : ""}
+        ${p.caveats.map(c => `<div class="cav">⚠ ${h(c)}</div>`).join("")}
+      </div></article>`).join("")}</div>
+      <div class="notes">
+        ${r.likes.filter(l => l.note).map(l => `<div class="note"><b>${h(l.label)}:</b> ${h(l.note)}</div>`).join("")}
+        <div class="note">Secundárias, sem gastar slot: ${r.secondary.map(s => `<b>${h(s.name)}</b> — ${h(s.why)}`).join(" · ")}</div>
+        ${r.account_plan ? `<div class="note warn"><b>Não cabe tudo em um personagem — divida na conta:</b> ${r.account_plan.map(a => `${h(CLS[a.class_id] || a.class_id)}: <b>${h(a.professions.join(" + "))}</b>${a.crafts.length ? ` (${h(a.crafts.join(", "))})` : ""}`).join(" · ")}</div>` : ""}
+      </div>`;
+  }
+  $("#p-all").innerHTML = PROFS.professions.map(p => profCard(p, picked.has(p.id))).join("");
+}
+
+/* ---------------- racials ao vivo */
+const rState = {class: "mage"};
+$$("#seg-rclass button").forEach(b => b.addEventListener("click", () => {
+  rState.class = b.dataset.v; $$("#seg-rclass button").forEach(x => x.setAttribute("aria-pressed", x === b)); loadRacials().catch(e => toast(e.message, true));
+}));
+["#r-race", "#r-q"].forEach(sel => $(sel).addEventListener("input", () => renderRacials()));
+let RACIALS = null;
+const FLD = {cast: "Cast", cooldown: "Cooldown", range: "Range", cost: "Cost", required_level: "Required level", description: "Description", aura: "Aura", subtitle: "Rank", variant: "Variant"};
+async function loadRacials() {
+  RACIALS = await api("/api/racials?" + new URLSearchParams({class: rState.class}));
+  if ($("#r-race").options.length === 1) $("#r-race").insertAdjacentHTML("beforeend", META.races.map(r => `<option value="${r.id}">${h(r.name)}</option>`).join(""));
+  const iso = v => v && (v.includes("T") ? v : v.replace(" ", "T") + "Z");
+  const runs = Object.values(RACIALS.sources).map(x => iso(x.last_ok?.finished_at)).filter(Boolean).sort();
+  $("#upd-info").innerHTML = runs.length
+    ? `Última atualização: <b>${fmtDate(runs[runs.length - 1])}</b>`
+    : `Usando os dados coletados em 27/10/2026 (Warcraft DB, Blizzard e Wowhead). Clique em atualizar para buscar as versões mais novas.`;
+  $("#sources").innerHTML = Object.entries(RACIALS.sources).map(([k, x]) => {
+    const ok = x.last_ok, last = x.last_try;
+    const failed = last && !last.ok;
+    return `<div class="src-card"><h3><span class="dot" style="background:${ok ? (failed ? "var(--warn)" : "var(--ok)") : "var(--faint)"}"></span><a href="${h(x.url)}" target="_blank" rel="noopener" style="color:inherit">${h(x.label)}</a></h3>
+      <div class="sub">${h(x.what)}</div>
+      <div>${ok ? `Atualizado em <span class="when">${fmtDate(iso(ok.finished_at))}</span>` : `<span class="when">Dados de 27/10/2026</span> (ainda não atualizado)`}</div>
+      ${failed ? `<div class="sub" style="color:var(--warn)">Última tentativa falhou em ${fmtDate(iso(last.finished_at))}</div>` : ""}</div>`;
+  }).join("");
+  $("#news-card").style.display = RACIALS.news.length ? "" : "none";
+  $("#news").innerHTML = RACIALS.news.map(n => `<li><div class="d">${fmtDate(n.published_at)}</div>
+    <a href="${h(n.link)}" target="_blank" rel="noopener">${h(n.title)}</a>
+    ${n.lines?.length ? `<ul>${n.lines.slice(0, 8).map(l => `<li>${h(l)}</li>`).join("")}</ul>` : `<div class="char-sub">${h(n.summary || "")}</div>`}</li>`).join("");
+  renderChanges(RACIALS.changes);
+  renderRacials();
+}
+function renderChanges(list) {
+  $("#changes-card").style.display = list.length ? "" : "none";
+  const name = id => RACIALS?.items.find(r => r.id === id)?.name || id;
+  $("#changes").innerHTML = list.slice(0, 40).map(c => `<li><b>${h(name(c.racial_id))}</b> <span class="src">#${c.spell_id} · ${FLD[c.field] || h(c.field)} · ${h((c.detected_at || "").slice(0, 10))}</span><br>
+    ${c.old_value ?? c.old ? `<del>${h(c.old_value ?? c.old)}</del> ` : ""}${c.new_value ?? c.new ? `<ins>${h(c.new_value ?? c.new)}</ins>` : "<del>removida</del>"}</li>`).join("");
+}
+function renderRacials() {
+  if (!RACIALS) return;
+  const race = $("#r-race").value, q = $("#r-q").value.trim().toLowerCase();
+  const canPlay = id => !rState.class || META.races.find(x => x.id === id)?.classes.includes(rState.class);
+  const items = RACIALS.items.map(r => ({...r, races: r.races.filter(x => canPlay(x.id))}))
+    .filter(r => r.races.length && (!race || r.races.some(x => x.id === race))
+      && (!q || [r.name, r.effect_pt, r.en?.description, r.en?.aura].join(" ").toLowerCase().includes(q)));
+  $("#racials").innerHTML = items.length ? items.map(r => `
+    <article class="rcard">
+      <div class="rcard-top">${r.races.map(x => `<span class="pill ${x.faction}">${h(x.name)}</span>`).join("")}</div>
+      ${tooltip(r.en || (r.notes.length ? {missing: true, notes: r.notes, notice: (x => x && x.tooltip_status !== "applied" ? x : null)(r.notes.find(n => ["outdated", "removed", "applied"].includes(n.tooltip_status)))} : null), r.effect_pt)}
+      ${r.notes.length ? `<details class="racials"><summary>Histórico oficial da Blizzard (${r.notes.length})</summary>${notesList(r.notes, 20)}</details>` : ""}
+      <div class="score">Peso no app: PvP <b>${"●".repeat(r.pvp_value)}${"○".repeat(3 - r.pvp_value)}</b> · PvE <b>${"●".repeat(r.pve_value)}${"○".repeat(3 - r.pve_value)}</b>${r.variants.length > 1 ? ` · ${r.variants.length} variantes por classe` : ""}</div>
+    </article>`).join("") : `<div class="empty"><p>Nenhuma racial com esse filtro.</p></div>`;
+}
+async function browserFallback() {
+  const ids = await api("/api/racials/spell-ids");
+  const items = {};
+  const jobs = Object.entries(ids).flatMap(([rid, list]) => list.map(id => [rid, id]));
+  let i = 0;
+  async function worker() {
+    while (i < jobs.length) {
+      const [rid, id] = jobs[i++];
+      try {
+        const r = await fetch(`https://forever.warcraftdb.com/api/v1/tooltip/spell/${id}`);
+        if (r.ok) { const j = await r.json(); (items[rid] ||= []).push({spell_id: id, html: j.html}); }
+      } catch (e) { /* segue com os outros */ }
+    }
+  }
+  await Promise.all(Array.from({length: 6}, worker));
+  if (!Object.keys(items).length) throw new Error("O Warcraft DB não respondeu nem pelo app nem pelo navegador. Verifique sua internet; os dados salvos continuam valendo.");
+  return api("/api/racials/ingest", {method: "POST", body: JSON.stringify({items})});
+}
+$("#btn-upd").onclick = async () => {
+  const b = $("#btn-upd"); b.disabled = true; b.classList.add("busy");
+  try {
+    let r = await api("/api/racials/update", {method: "POST"});
+    if (r.blocked) {
+      toast("O Warcraft DB bloqueou o app; buscando os tooltips pelo navegador…");
+      try { r.warcraftdb = await browserFallback(); } catch (e) { toast(e.message, true); }
+    }
+    const w = r.warcraftdb || {}, bz = r.blizzard || {}, wh = r.wowhead || {};
+    toast(`Warcraft DB: ${w.updated ?? 0} racials mudaram · Blizzard: ${bz.new_notes ?? 0} notas novas · Wowhead: ${wh.new_news ?? 0} notícias novas`);
+    const fails = [!bz.ok && "Blizzard", !wh.ok && "Wowhead"].filter(Boolean);
+    if (fails.length) toast(`Não consegui acessar: ${fails.join(", ")}. Os dados salvos continuam valendo.`, true);
+    await loadRacials();
+  } catch (e) { toast(e.message, true); }
+  finally { b.disabled = false; b.classList.remove("busy"); }
+};
+
+/* ---------------- decisão */
+async function loadDecision() {
+  const rows = await api("/api/decision-table");
+  const cols = Object.keys(rows[0]);
+  const cell = v => { const m = /^(.*?) \(alt: (.*)\)$/.exec(v); return m ? `${h(m[1])}<span class="alt">ou ${h(m[2])}</span>` : h(v); };
+  $("#dec-table").innerHTML = `<thead><tr>${cols.map(c => `<th>${h(c)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(r => `<tr>${cols.map((c, i) => i === 0 ? `<td class="cls">${h(r[c])}</td>` : c === "Observações" ? `<td class="obs">${h(r[c])}</td>` : `<td>${cell(r[c])}</td>`).join("")}</tr>`).join("")}</tbody>`;
+}
+
+/* ---------------- personagens */
+async function loadChars() {
+  const chars = await api("/api/characters");
+  if (!chars.length) {
+    $("#chars").innerHTML = `<div class="empty"><p>Nenhum personagem ainda. Comece pelo seu Mage da Horda.</p>
+      <button class="btn primary" onclick="openDrawer({class_name:'mage',faction:'horde',goal:'pvp',creation_order:1})">Cadastrar Mage da Horda</button></div>`;
+    return;
+  }
+  const raceName = id => META.races.find(r => r.id === id)?.name || id;
+  $("#chars").innerHTML = `<div class="chars">${chars.map(c => `
+    <article class="char ${c.faction}" data-id="${c.id}">
+      <div class="char-top"><div><div class="char-name">${h(c.name)}</div>
+        <div class="char-sub">${h(raceName(c.race))} ${h(CLS[c.class_name] || c.class_name)}${c.spec ? " · " + h(c.spec) : ""}</div></div>
+        ${facPill(c.faction)}</div>
+      <div class="char-sub">Objetivo ${MODE[c.goal]} · ordem ${c.creation_order} · prioridade ${c.priority}${c.realm ? " · " + h(c.realm) : ""}</div>
+      ${c.notes ? `<div class="char-sub">${h(c.notes)}</div>` : ""}
+      <div class="char-row">
+        <select class="input c-status">${Object.entries(ST).map(([k, v]) => `<option value="${k}" ${k === c.status ? "selected" : ""}>${v}</option>`).join("")}</select>
+        <input class="input lvl c-level" type="number" min="1" max="60" value="${c.level}" aria-label="Nível">
+      </div>
+      <div class="char-row"><button class="btn c-save">Salvar</button><button class="btn ghost danger c-del">Excluir</button></div>
+    </article>`).join("")}</div>`;
+  $$(".char").forEach(el => {
+    const id = el.dataset.id;
+    $(".c-save", el).onclick = async () => {
+      try { await api(`/api/characters/${id}`, {method:"POST", body: JSON.stringify({status: $(".c-status", el).value, level: $(".c-level", el).value})});
+        toast("Personagem atualizado"); } catch (e) { toast(e.message, true); }
+    };
+    const del = $(".c-del", el);
+    del.onclick = async () => {
+      if (del.dataset.confirm !== "1") { del.dataset.confirm = "1"; del.textContent = "Confirmar exclusão"; setTimeout(() => { del.dataset.confirm = ""; del.textContent = "Excluir"; }, 4000); return; }
+      try { const r = await api(`/api/characters/${id}`, {method:"DELETE"}); toast(`${r.deleted} excluído`); loadChars(); } catch (e) { toast(e.message, true); }
+    };
+  });
+}
+
+/* drawer */
+const form = $("#char-form");
+function fillClassRace() {
+  const fac = form.faction.value;
+  const classes = [...new Set(META.races.filter(r => r.faction === fac).flatMap(r => r.classes))].sort();
+  const cur = form.class_name.value;
+  form.class_name.innerHTML = classes.map(c => `<option value="${c}">${CLS[c] || c}</option>`).join("");
+  if (classes.includes(cur)) form.class_name.value = cur;
+  fillRace();
+}
+function fillRace() {
+  const fac = form.faction.value, cls = form.class_name.value;
+  const races = META.races.filter(r => r.faction === fac && r.classes.includes(cls));
+  form.race.innerHTML = races.map(r => `<option value="${r.id}">${h(r.name)}${r.requires_purchase ? " (exige pack)" : ""}</option>`).join("");
+  $("#race-hint").textContent = cls === "mage" && fac === "horde"
+    ? "Mage Skyborne só existe na Aliança (High Order). Na Horda, o Skyborne é Shaman." : "";
+}
+form.faction.addEventListener("change", fillClassRace);
+form.class_name.addEventListener("change", fillRace);
+window.openDrawer = (pre={}) => {
+  form.reset();
+  if (pre.faction) form.faction.value = pre.faction;
+  fillClassRace();
+  form.class_name.value = pre.class_name || "mage"; fillRace();
+  if (pre.goal) form.goal.value = pre.goal;
+  if (pre.creation_order) form.creation_order.value = pre.creation_order;
+  $("#drawer").classList.add("open"); $("#scrim").classList.add("open"); $("#drawer").setAttribute("aria-hidden", "false");
+  setTimeout(() => form.name.focus(), 50);
+};
+function closeDrawer() { $("#drawer").classList.remove("open"); $("#scrim").classList.remove("open"); $("#drawer").setAttribute("aria-hidden", "true"); }
+$("#btn-new-char").onclick = () => openDrawer();
+$("#btn-cancel").onclick = closeDrawer; $("#scrim").onclick = closeDrawer;
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form));
+  try { const c = await api("/api/characters", {method:"POST", body: JSON.stringify(data)});
+    toast(`${c.name} cadastrado`); closeDrawer();
+    const active = $(".view.active").id.replace("view-", ""); loaders[active]();
+  } catch (err) { toast(err.message, true); }
+});
+
+/* ---------------- coleção */
+function ring(p) {
+  const r = 70, c = 2 * Math.PI * r, off = c * (1 - p.percent / 100);
+  return `<svg viewBox="0 0 170 170" role="img" aria-label="${p.percent}% obtido">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5fd0e6"/><stop offset="1" stop-color="#d9b15c"/></linearGradient></defs>
+    <circle cx="85" cy="85" r="${r}" fill="none" stroke="#1d2138" stroke-width="12"/>
+    <circle cx="85" cy="85" r="${r}" fill="none" stroke="url(#g)" stroke-width="12" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 85 85)"/>
+    <text x="85" y="88" text-anchor="middle" class="ring-num">${p.percent}%</text>
+    <text x="85" y="110" text-anchor="middle" class="ring-sub">${p.collected} de ${p.obtainable}</text></svg>
+    <div class="char-sub">${p.missing} faltando · ${p.blocked} bloqueados</div>`;
+}
+async function loadCollection() {
+  const d = await api("/api/collection/progress");
+  $("#ring").innerHTML = ring(d.overall);
+  $("#bars").innerHTML = d.categories.length ? d.categories.map(c => `
+    <div class="bar-row"><span>${CAT[c.scope] || h(c.scope)}</span><div class="bar"><i style="width:${c.percent}%"></i></div>
+    <span class="n">${c.collected}/${c.obtainable}</span></div>`).join("")
+    : `<p class="char-sub">Nada ainda. Importe do All The Things depois de jogar.</p>`;
+  $("#per-char").innerHTML = `<h2>Por personagem</h2>` + (d.characters.length ? `<div class="bars">${d.characters.map(c => `
+    <div class="bar-row"><span>${h(c.scope)} ${facPill(c.faction)}</span><div class="bar"><i style="width:${c.percent}%"></i></div>
+    <span class="n">${c.percent}%</span></div>`).join("")}</div>` : `<p class="char-sub">Cadastre personagens para ver o progresso de cada um.</p>`);
+  $("#alerts-card").style.display = d.alerts.length ? "" : "none";
+  $("#alerts").innerHTML = d.alerts.map(a => `<li>⚠ ${h(a)}</li>`).join("");
+  if ($("#f-cat").options.length === 1) $("#f-cat").insertAdjacentHTML("beforeend", META.categories.map(c => `<option value="${c}">${CAT[c] || c}</option>`).join(""));
+  await loadItems();
+}
+let itemTimer;
+["#f-q","#f-cat","#f-fac","#f-status"].forEach(s => $(s).addEventListener("input", () => { clearTimeout(itemTimer); itemTimer = setTimeout(() => loadItems().catch(e => toast(e.message, true)), 200); }));
+async function loadItems() {
+  const q = new URLSearchParams({q: $("#f-q").value, category: $("#f-cat").value, faction: $("#f-fac").value, status: $("#f-status").value});
+  const rows = await api("/api/collection/items?" + q);
+  if (!rows.length) { $("#items").innerHTML = `<tbody><tr><td class="char-sub" style="padding:28px;text-align:center">Nenhum item com esses filtros.</td></tr></tbody>`; return; }
+  $("#items").innerHTML = `<thead><tr><th>Item</th><th>Categoria</th><th>Fonte</th><th>Facção</th><th>Status</th></tr></thead><tbody>${rows.map(r => `
+    <tr><td>${h(r.name)}<span class="alt" style="display:block;color:var(--faint);font-size:12px">ID ${h(r.external_id)}${r.class_restriction ? " · só " + h(CLS[r.class_restriction] || r.class_restriction) : ""}</span></td>
+    <td>${CAT[r.category] || h(r.category)}</td><td class="char-sub">${h(r.source || "—")}</td>
+    <td>${r.faction ? facPill(r.faction) : `<span class="char-sub">Ambas</span>`}</td>
+    <td><select class="input item-status" data-item="${r.id}">${Object.entries(IST).map(([k, v]) => `<option value="${k}" ${k === r.status ? "selected" : ""}>${v}</option>`).join("")}</select></td></tr>`).join("")}</tbody>`;
+  $$(".item-status").forEach(s => s.addEventListener("change", async () => {
+    try { await api("/api/collection/status", {method:"POST", body: JSON.stringify({item_id: s.dataset.item, status: s.value})});
+      toast("Status atualizado"); const d = await api("/api/collection/progress"); $("#ring").innerHTML = ring(d.overall); }
+    catch (e) { toast(e.message, true); }
+  }));
+}
+$("#btn-import").onclick = async () => {
+  const b = $("#btn-import"); b.disabled = true;
+  try {
+    const r = await api("/api/collection/import-att", {method:"POST"});
+    toast(`Importado: ${r.items_seen} itens, ${r.collected} obtidos${r.characters_matched.length ? " · " + r.characters_matched.join(", ") : ""}`);
+    if (r.characters_unmatched.length) toast(`Sem cadastro no app: ${r.characters_unmatched.join(", ")}. Cadastre com o mesmo nome e importe de novo.`, true);
+    loadCollection();
+  } catch (e) { toast(e.message, true); } finally { b.disabled = false; }
+};
+
+/* ---------------- início */
+(async () => {
+  try {
+    META = await api("/api/meta");
+    $("#data-version").textContent = `Dados do jogo de ${fmtDate(META.game_data_version, false)} (inclui ajustes de lançamento)`;
+    $("#att-status").innerHTML = META.att_file_exists
+      ? `<span class="dot" style="background:var(--ok)"></span>ATT encontrado`
+      : `<span class="dot" style="background:var(--warn)"></span>ATT ainda sem dados. Jogue e saia do jogo uma vez.`;
+  } catch (e) { toast("Não consegui falar com o servidor: " + e.message, true); return; }
+  const start = location.hash.slice(1);
+  go(loaders[start] ? start : "plano");
+})();
+</script>
+</body>
+</html>

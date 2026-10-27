@@ -1,0 +1,906 @@
+{
+ "source": "https://forever.warcraftdb.com/api/v1/tooltip/spell/<id>",
+ "fetched_at": "2026-10-27T15:00:00Z",
+ "method": "seed",
+ "racials": {
+  "beast_slaying": {
+   "variants": [
+    {
+     "spell_id": 20557,
+     "name": "Beast Slaying",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Damage dealt versus Beasts increased by 5%.",
+     "aura": null
+    }
+   ]
+  },
+  "berserking": {
+   "variants": [
+    {
+     "spell_id": 20554,
+     "name": "Berserking",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases your spellcasting and attack speed by 10% for 10 sec.",
+     "aura": "Spellcasting and attack speed increased by 10%."
+    }
+   ]
+  },
+  "big_game_hunter": {
+   "variants": [
+    {
+     "spell_id": 1259721,
+     "name": "Big Game Hunter",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Damage dealt versus Beasts increased by 5%.",
+     "aura": null
+    }
+   ]
+  },
+  "blood_fury": {
+   "variants": [
+    {
+     "spell_id": 20572,
+     "name": "Blood Fury",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases Attack Power and Spell Power by 10% for 15 sec.",
+     "aura": "Attack Power and Spell Power increased by 10%."
+    }
+   ]
+  },
+  "cannibalize": {
+   "variants": [
+    {
+     "spell_id": 20577,
+     "name": "Cannibalize",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "2 min",
+     "range": "5 yd range",
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "When activated, regenerates 7% of total Health and 7% of total Mana every 2 sec for 10 sec. Only works on Humanoid or Undead corpses within 5 yds. Any movement, action, or damage taken while Cannibalizing will cancel the effect.",
+     "aura": null
+    }
+   ]
+  },
+  "chastise": {
+   "variants": [
+    {
+     "spell_id": 1277335,
+     "name": "Chastise",
+     "subtitle": "Rank 5",
+     "cast": "Instant",
+     "cooldown": "2 min",
+     "range": "20 yd range",
+     "cost": "225 Mana",
+     "required_level": "60",
+     "classes": [
+      "priest"
+     ],
+     "description": "Chastise the target, causing 272 to 306 Holy damage and Immobilizing them for up to 2 sec. Only works against Humanoids. This spell causes very low threat.",
+     "aura": "Immobilized."
+    }
+   ]
+  },
+  "confounding_flash": {
+   "variants": [
+    {
+     "spell_id": 1277455,
+     "name": "Confounding Flash",
+     "subtitle": null,
+     "cast": "0.5 sec cast",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": "3.0% of base Mana",
+     "required_level": "10",
+     "classes": [
+      "priest"
+     ],
+     "description": "Confuses up to 5 enemies within 8 yds for 3 sec. Any damage taken will break the effect.",
+     "aura": "Confused."
+    }
+   ]
+  },
+  "contingency_plan": {
+   "variants": [
+    {
+     "spell_id": 1277462,
+     "name": "Contingency Plan",
+     "subtitle": "Rank 1",
+     "cast": "Instant",
+     "cooldown": "10 min",
+     "range": "30 yd range",
+     "cost": null,
+     "required_level": "20",
+     "classes": [
+      "priest"
+     ],
+     "description": "Place a Holy ward on an ally for 30 sec. The next time this ally takes damage dropping their Health below 35%, they will gain a shield absorbing 155 damage and begin healing for 125 Health over 15 sec. A target may be affected by only one Contingency Plan.",
+     "aura": "Warded against damage taking Health below 35%."
+    }
+   ]
+  },
+  "cultivation": {
+   "variants": [
+    {
+     "spell_id": 20552,
+     "name": "Cultivation",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Cultivate a nearby herb, growing a duplicate you can harvest without requiring Herbalism skill. Each herb may only be cultivated once.",
+     "aura": null
+    }
+   ]
+  },
+  "dark_sacrifice": {
+   "variants": [
+    {
+     "spell_id": 1277328,
+     "name": "Dark Sacrifice",
+     "subtitle": "Rank 5",
+     "cast": "Instant",
+     "cooldown": "10 min",
+     "range": null,
+     "cost": null,
+     "required_level": "60",
+     "classes": [
+      "priest"
+     ],
+     "description": "Cannibalize 1600 of your own Health over 15 sec to gain 1600 Mana.",
+     "aura": "Converting 320 Health into 320 Mana every 3 sec."
+    }
+   ]
+  },
+  "desperate_prayer": {
+   "variants": [
+    {
+     "spell_id": 19243,
+     "name": "Desperate Prayer",
+     "subtitle": "Rank 7",
+     "cast": "Instant",
+     "cooldown": "10 min",
+     "range": null,
+     "cost": null,
+     "required_level": "58",
+     "classes": [
+      "priest"
+     ],
+     "description": "Instantly heals the caster for 1285 to 1514.",
+     "aura": null
+    }
+   ]
+  },
+  "divine_grace": {
+   "variants": [
+    {
+     "spell_id": 1277378,
+     "name": "Divine Grace",
+     "subtitle": "Rank 7",
+     "cast": "Instant",
+     "cooldown": "10 min",
+     "range": "40 yd range",
+     "cost": null,
+     "required_level": "58",
+     "classes": [
+      "priest"
+     ],
+     "description": "Instantly heals a friendly target below 50% Health for 1285 to 1514 and removes Weakened Soul from that target. Cannot be cast on self.",
+     "aura": null
+    }
+   ]
+  },
+  "earth_fury": {
+   "variants": [
+    {
+     "spell_id": 1259719,
+     "name": "Earth Fury",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases your critical strike bonus to damage and healing by 2%.",
+     "aura": null
+    }
+   ]
+  },
+  "elemental_insight": {
+   "variants": [
+    {
+     "spell_id": 1259707,
+     "name": "Elemental Insight",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Damage dealt versus Elementals increased by 5%.",
+     "aura": null
+    }
+   ]
+  },
+  "elunes_grace": {
+   "variants": [
+    {
+     "spell_id": 2651,
+     "name": "Elune's Grace",
+     "subtitle": null,
+     "cast": "Instant",
+     "cooldown": "5 min",
+     "range": null,
+     "cost": "3.0% of base Mana",
+     "required_level": "20",
+     "classes": [
+      "priest"
+     ],
+     "description": "Reduces the chance you'll be hit by melee and ranged attacks by 50% for 15 sec or until you are missed 3 times.",
+     "aura": "Chance to be hit by melee and ranged attacks reduced by 50% until you are missed 3 times."
+    }
+   ]
+  },
+  "elunes_light": {
+   "variants": [
+    {
+     "spell_id": 1259799,
+     "name": "Elune's Light",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases your critical strike chance with all spells and attacks by 10% for 15 sec.",
+     "aura": "Critical strike chance with all spells and attacks increased by 10%."
+    }
+   ]
+  },
+  "endurance": {
+   "variants": [
+    {
+     "spell_id": 20550,
+     "name": "Endurance",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Total Health increased by 5% and critical strike bonus to damage and healing increased by 2%.",
+     "aura": null
+    }
+   ]
+  },
+  "engineering_specialization": {
+   "variants": [
+    {
+     "spell_id": 20593,
+     "name": "Engineering Specialization",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Your gnomish ingenuity reduces the rate of engineering devices failing or backfiring when you use them by 20%.",
+     "aura": null
+    }
+   ]
+  },
+  "escape_artist": {
+   "variants": [
+    {
+     "spell_id": 20589,
+     "name": "Escape Artist",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Instantly escape the effects of any movement impairing effect and gain immunity to those effects for 3 sec.",
+     "aura": "Immune to movement impairing effects."
+    }
+   ]
+  },
+  "eureka": {
+   "variants": [
+    {
+     "spell_id": 1259817,
+     "name": "Eureka!",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [
+      "mage"
+     ],
+     "description": "Your damaging abilities have their Mana cost reduced by 10% and deal 10% more damage for 8 sec.",
+     "aura": "Damaging abilities cost 10% less Mana and deal 10% more damage."
+    },
+    {
+     "spell_id": 1259823,
+     "name": "Eureka!",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [
+      "priest"
+     ],
+     "description": "Your non-periodic damaging or healing abilities have their Mana cost reduced by 10% and deal 10% more damage or healing for 8 sec.",
+     "aura": "Non-periodic damaging or healing abilities cost 10% less Mana and deal 10% more damage or healing."
+    }
+   ]
+  },
+  "expansive_mind": {
+   "variants": [
+    {
+     "spell_id": 20591,
+     "name": "Expansive Mind",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [
+      "priest",
+      "mage",
+      "warlock"
+     ],
+     "description": "Maximum Mana increased by 5%.",
+     "aura": null
+    }
+   ]
+  },
+  "feedback": {
+   "variants": [
+    {
+     "spell_id": 19275,
+     "name": "Feedback",
+     "subtitle": "Rank 5",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": "230 Mana",
+     "required_level": "60",
+     "classes": [
+      "priest"
+     ],
+     "description": "The priest becomes surrounded with anti-magic energy. Any successful spell cast against the priest will burn 105 of the attacker's Mana, causing 1 Shadow damage for each point of Mana burned. Lasts 15 sec.",
+     "aura": "Anti-magic energy will burn 105 of the attacker's Mana, causing 1 Shadow damage for each point of Mana burned."
+    }
+   ]
+  },
+  "find_treasure": {
+   "variants": [
+    {
+     "spell_id": 2481,
+     "name": "Find Treasure",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Allows the dwarf to sense nearby treasure, making it appear on the minimap. Lasts until canceled.",
+     "aura": "Finding treasure."
+    }
+   ]
+  },
+  "hardiness": {
+   "variants": [
+    {
+     "spell_id": 20573,
+     "name": "Hardiness",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Duration of Stun effects on you reduced by 20%.",
+     "aura": null
+    }
+   ]
+  },
+  "hex_of_weakness": {
+   "variants": [
+    {
+     "spell_id": 19285,
+     "name": "Hex of Weakness",
+     "subtitle": "Rank 6",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": "30 yd range",
+     "cost": "240 Mana",
+     "required_level": "60",
+     "classes": [
+      "priest"
+     ],
+     "description": "Weakens the target enemy, reducing melee attack power by 204 and reducing the effectiveness of any healing by 20%. Lasts 2 min",
+     "aura": "Melee attack power reduced by 204 and healing effectiveness reduced by 20%."
+    }
+   ]
+  },
+  "perception": {
+   "variants": [
+    {
+     "spell_id": 20600,
+     "name": "Perception",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Dramatically increases stealth detection for 20 sec.",
+     "aura": "Stealth detection dramatically increased."
+    }
+   ]
+  },
+  "plainsrunning": {
+   "variants": [
+    {
+     "spell_id": 1259918,
+     "name": "Plainsrunning",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Gain 1% increased movement speed every 5 sec spent moving, up to a maximum of 30% increase. Taking damage or standing still will reduce this effect. In addition, you move 3% faster while mounted.",
+     "aura": null
+    }
+   ]
+  },
+  "quickness": {
+   "variants": [
+    {
+     "spell_id": 20582,
+     "name": "Quickness",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Dodge chance increased by 1% and movement speed increased by 2%. Night Elf Rogues and Druids are harder to detect in Stealth as if they were 1 level higher.",
+     "aura": null
+    }
+   ]
+  },
+  "rapid_regeneration": {
+   "variants": [
+    {
+     "spell_id": 1260270,
+     "name": "Rapid Regeneration",
+     "subtitle": null,
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Regenerate 50% of your maximum Health over 6 sec. Any movement, action, or damage taken will cancel the effect.",
+     "aura": "Regenerating 50% of maximum Health over 6 sec."
+    }
+   ]
+  },
+  "read_ley_line": {
+   "variants": [
+    {
+     "spell_id": 1259705,
+     "name": "Read Leyline",
+     "subtitle": "Racial",
+     "cast": "2 sec cast",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Attempt to tap into the power of a nearby leyline, increasing your Health and Mana regeneration by 100%. Lasts 30 sec if no leyline is nearby, and 15 min if one is found.",
+     "aura": null
+    }
+   ]
+  },
+  "regeneration": {
+   "variants": [
+    {
+     "spell_id": 20555,
+     "name": "Regeneration",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Health regeneration rate increased by 20%. In addition, 20% of total Health regeneration will continue during combat.",
+     "aura": null
+    }
+   ]
+  },
+  "ruthless": {
+   "variants": [
+    {
+     "spell_id": 20597,
+     "name": "Ruthless",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases your critical strike chance with all spells and attacks by 2%.",
+     "aura": null
+    }
+   ]
+  },
+  "savage": {
+   "variants": [
+    {
+     "spell_id": 20574,
+     "name": "Savage",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases your critical strike chance with all spells and abilities by 1%.",
+     "aura": null
+    }
+   ]
+  },
+  "shadowguard": {
+   "variants": [
+    {
+     "spell_id": 19312,
+     "name": "Shadowguard",
+     "subtitle": "Rank 6",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": "250 Mana",
+     "required_level": "60",
+     "classes": [
+      "priest"
+     ],
+     "description": "The caster is surrounded by shadows. When a spell, melee or ranged attack hits the caster, the attacker will be struck for 96 Shadow damage. Attackers can only be damaged once every few seconds. This damage causes no threat. 3 charges. Lasts 10 min.",
+     "aura": "Causes 116 Shadow damage to attacker on hit. This damage causes no threat. 3 charges."
+    }
+   ]
+  },
+  "shadowmeld": {
+   "variants": [
+    {
+     "spell_id": 20580,
+     "name": "Shadowmeld",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "10 sec",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Activate to slip into the shadows, reducing the chance for enemies to detect your presence. Lasts until cancelled or upon moving. Using this ability in combat discourages enemies from attacking you, but increases the cooldown to 2 min.",
+     "aura": "Shadowmelded."
+    }
+   ]
+  },
+  "shatter_curse": {
+   "variants": [
+    {
+     "spell_id": 1299026,
+     "name": "Shatter Curse",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": "1",
+     "classes": [],
+     "description": "Instantly removes all Curses and Banes, and reduces all Magical damage taken by 5% for 8 sec.",
+     "aura": "Reduces Magical damage taken by 5%."
+    }
+   ]
+  },
+  "skysight": {
+   "variants": [
+    {
+     "spell_id": 1259686,
+     "name": "Skysight",
+     "subtitle": "Racial",
+     "cast": "0.5 sec cast",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Attempt to draw power from a convergence of elements and receive its blessing, increasing your movement and mounted movement speeds by 10%. Lasts 30 sec if no elemental convergence is nearby, and 15 min if one is found.",
+     "aura": null
+    }
+   ]
+  },
+  "starshards": {
+   "variants": [
+    {
+     "spell_id": 19305,
+     "name": "Starshards",
+     "subtitle": "Rank 7",
+     "cast": "Instant",
+     "cooldown": "30 sec",
+     "range": "30 yd range",
+     "cost": "350 Mana",
+     "required_level": "58",
+     "classes": [
+      "priest"
+     ],
+     "description": "Rains starshards down on the enemy target's head, causing 1800 Arcane damage over 6 sec.",
+     "aura": "1800 Arcane damage over 6 sec."
+    }
+   ]
+  },
+  "stoneform": {
+   "variants": [
+    {
+     "spell_id": 20594,
+     "name": "Stoneform",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": "1",
+     "classes": [],
+     "description": "Instantly removes and grants immunity to all Bleed, Poison, and Disease effects, and reduces all Physical damage taken by 10% for 8 sec.",
+     "aura": "Immune to Bleed, Poison, and Disease effects. Reduces Physical damage taken by 10%."
+    }
+   ]
+  },
+  "the_human_spirit": {
+   "variants": [
+    {
+     "spell_id": 20598,
+     "name": "The Human Spirit",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Spirit increased by 5%.",
+     "aura": null
+    }
+   ]
+  },
+  "touch_of_the_grave": {
+   "variants": [
+    {
+     "spell_id": 1260201,
+     "name": "Touch of the Grave",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [
+      "priest",
+      "mage",
+      "warlock"
+     ],
+     "description": "Your spells and attacks have a 30% chance to drain Health from the target, up to 5% of your maximum Health.",
+     "aura": null
+    },
+    {
+     "spell_id": 1260189,
+     "name": "Touch of the Grave",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [
+      "warrior",
+      "paladin",
+      "rogue"
+     ],
+     "description": "Your spells and attacks have a 20% chance to drain Health from the target, up to 5% of your maximum Health.",
+     "aura": null
+    }
+   ]
+  },
+  "touch_of_weakness": {
+   "variants": [
+    {
+     "spell_id": 19254,
+     "name": "Touch of Weakness",
+     "subtitle": "Rank 6",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": "100 yd range",
+     "cost": null,
+     "required_level": "60",
+     "classes": [
+      "priest"
+     ],
+     "description": null,
+     "aura": "Melee attack power reduced by 204."
+    }
+   ]
+  },
+  "underwater_breathing": {
+   "variants": [
+    {
+     "spell_id": 5227,
+     "name": "Underwater Breathing",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Underwater breath lasts 300% longer than normal.",
+     "aura": null
+    }
+   ]
+  },
+  "walk_on_air": {
+   "variants": [
+    {
+     "spell_id": 1259416,
+     "name": "Walk on Air",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "1.5 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Glide downward through the air for 10 sec while controlling your direction of travel.",
+     "aura": "Walking on air."
+    }
+   ]
+  },
+  "war_stomp": {
+   "variants": [
+    {
+     "spell_id": 20549,
+     "name": "War Stomp",
+     "subtitle": "Racial",
+     "cast": "0.5 sec cast",
+     "cooldown": "1.5 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Stuns up to 5 enemies within 8 yds for 2 sec.",
+     "aura": "Stunned."
+    }
+   ]
+  },
+  "will_of_the_forsaken": {
+   "variants": [
+    {
+     "spell_id": 7744,
+     "name": "Will of the Forsaken",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "2 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Instantly removes all Charm, Fear and Sleep effects.",
+     "aura": null
+    }
+   ]
+  },
+  "will_to_survive": {
+   "variants": [
+    {
+     "spell_id": 1259718,
+     "name": "Will to Survive",
+     "subtitle": "Racial",
+     "cast": "Instant",
+     "cooldown": "3 min",
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Instantly removes all Stun effects.",
+     "aura": null
+    }
+   ]
+  },
+  "wind_blessed": {
+   "variants": [
+    {
+     "spell_id": 1259710,
+     "name": "Wind Blessed",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Increases your spellcasting, melee, and ranged Haste by 3%.",
+     "aura": null
+    }
+   ]
+  },
+  "wisp_spirit": {
+   "variants": [
+    {
+     "spell_id": 20585,
+     "name": "Wisp Spirit",
+     "subtitle": "Racial Passive",
+     "cast": "Instant",
+     "cooldown": null,
+     "range": null,
+     "cost": null,
+     "required_level": null,
+     "classes": [],
+     "description": "Transform into a wisp upon death, increasing movement speed by 75%.",
+     "aura": null
+    }
+   ]
+  }
+ }
+}

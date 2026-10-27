@@ -1,0 +1,212 @@
+# Recomendações por classe/facção/modo.
+# IMPORTANTE: os guias públicos dão notas gerais por raça (ver races.yaml -> general_grades),
+# mas NÃO separam PvP de PvE. A divisão abaixo é ANÁLISE DO APP feita a partir dos efeitos das
+# racials (confidence: analysis). Specs e profissões também são análise — revise quando sair
+# tier list oficial pós-lançamento.
+version: "2026-10-27"
+
+_refs:
+  analysis: &analysis
+    source: "Análise do wow-collection-planner baseada em racials (warcrafttavern.com/forever, rankedboost.com/world-of-warcraft/forever)"
+    last_verified: "2026-10-26"
+    confidence: analysis
+    patch: "beta 1.60.x"
+
+recommendations:
+  # ======================= MAGE =======================
+  - class_id: mage
+    faction: horde
+    mode: pvp
+    starting_spec: frost
+    professions: [engineering, tailoring]
+    ref: *analysis
+    notes: "Undead e Orc são muito próximos; decida pelo que seus amigos mais enfrentam (fear/charm -> Undead; stun/curse/burst -> Orc)."
+    picks:
+      - {race: undead, rank: 1, key_racials: [will_of_the_forsaken, touch_of_the_grave],
+         reason: "Will of the Forsaken contra fear/charm + dreno de vida de 30% de chance para casters."}
+      - {race: orc, rank: 2, key_racials: [hardiness, blood_fury, shatter_curse],
+         reason: "Hardiness reduz stuns em 20%, Blood Fury dá burst (+10% SP, 2 min) e Shatter Curse limpa curses e corta 5% do dano mágico."}
+      - {race: troll, rank: 3, key_racials: [berserking],
+         reason: "Berserking dá burst de cast speed, mas sem racial defensiva de controle."}
+
+  - class_id: mage
+    faction: horde
+    mode: pve
+    starting_spec: frost
+    professions: [tailoring, enchanting]
+    ref: *analysis
+    notes: "Frost é sugerido para upar; reavalie Fire/Arcane para raide quando houver tier list de fim de jogo do Forever."
+    picks:
+      - {race: troll, rank: 1, key_racials: [berserking], reason: "+10% de velocidade de conjuração em janela de burst."}
+      - {race: orc, rank: 2, key_racials: [blood_fury], reason: "+10% de Spell Power por 15s com recarga de 2 min; praticamente empatado com Troll."}
+      - {race: undead, rank: 3, key_racials: [touch_of_the_grave], reason: "Nota geral S nos guias, mais pelo sustain do que por dano."}
+
+  - class_id: mage
+    faction: horde
+    mode: collection
+    starting_spec: frost
+    professions: [tailoring, enchanting, fishing, cooking]
+    ref: *analysis
+    notes: "Para colecionismo a raça pesa pouco: escolha a estética que você mais gosta."
+    picks:
+      - {race: orc, rank: 1, reason: "Orc Mage é combinação inédita no Forever (valor de 'novidade'/estética)."}
+      - {race: undead, rank: 2, reason: "Clássico; começa em Tirisfal/Undercity."}
+      - {race: troll, rank: 3, reason: "Divide Durotar/Orgrimmar com Orc."}
+
+  - class_id: mage
+    faction: alliance
+    mode: pvp
+    starting_spec: frost
+    professions: [engineering, tailoring]
+    ref: *analysis
+    picks:
+      - {race: human, rank: 1, key_racials: [will_to_survive, perception], reason: "Will to Survive remove todos os stuns (recarga 3 min) — o melhor anti-controle contra classes de stun."}
+      - {race: gnome, rank: 2, key_racials: [escape_artist, eureka, expansive_mind], reason: "Escape Artist contra roots/snares + burst do Eureka!."}
+      - {race: skyborne_high_order, rank: 3, key_racials: [walk_on_air, wind_blessed], reason: "Mobilidade vertical e +2% de haste, sem racial de controle."}
+
+  - class_id: mage
+    faction: alliance
+    mode: pve
+    starting_spec: frost
+    professions: [tailoring, enchanting]
+    ref: *analysis
+    notes: "Mage Skyborne é viável (nota B), mas Gnome tem números melhores (nota S) — e o Skyborne perdeu força no ajuste de lançamento (haste 3%→2%, Read Leyline 100%→50%)."
+    picks:
+      - {race: gnome, rank: 1, key_racials: [eureka, expansive_mind], reason: "Eureka! (+10% dano, -10% mana em 3 casts) e +5% de mana."}
+      - {race: skyborne_high_order, rank: 2, key_racials: [wind_blessed, read_ley_line], reason: "+2% de haste e Read Leyline (+50% de regen, +100% com Attuned fora de raide) entre pulls."}
+      - {race: human, rank: 3, key_racials: [ruthless, the_human_spirit], reason: "Ruthless dá +1% de crítico e The Human Spirit +10% de Spirit."}
+
+  - class_id: mage
+    faction: alliance
+    mode: collection
+    starting_spec: frost
+    professions: [tailoring, enchanting, fishing, cooking]
+    ref: *analysis
+    picks:
+      - {race: skyborne_high_order, rank: 1, key_racials: [walk_on_air],
+         reason: "Raça nova, Zephras Isle, reputação High Order e montarias Galestrider; exige compra do pack."}
+      - {race: gnome, rank: 2, reason: "Melhor opção de números se você não comprar o pack Skyborne."}
+      - {race: human, rank: 3, reason: "Elwynn/Stormwind."}
+
+  # ======================= PRIEST =======================
+  - class_id: priest
+    faction: horde
+    mode: pvp
+    starting_spec: shadow
+    professions: [tailoring, engineering]
+    ref: *analysis
+    picks:
+      - {race: undead, rank: 1, key_racials: [will_of_the_forsaken, touch_of_weakness, touch_of_the_grave], reason: "Defesa contra fear/charm e dreno de vida."}
+      - {race: troll, rank: 2, key_racials: [berserking, hex_of_weakness], reason: "Hex of Weakness reduz dano/cura do alvo; Berserking para burst."}
+
+  - class_id: priest
+    faction: horde
+    mode: pve
+    starting_spec: holy
+    professions: [tailoring, enchanting]
+    ref: *analysis
+    notes: "Upe como Shadow e troque para Holy/Discipline ao entrar em dungeon/raide."
+    picks:
+      - {race: troll, rank: 1, key_racials: [berserking], reason: "Berserking acelera curas em momentos críticos."}
+      - {race: undead, rank: 2, key_racials: [dark_sacrifice], reason: "Dark Sacrifice troca vida por mana, reduz pausas para beber."}
+
+  - class_id: priest
+    faction: horde
+    mode: collection
+    starting_spec: shadow
+    professions: [tailoring, enchanting, fishing, cooking]
+    ref: *analysis
+    picks:
+      - {race: undead, rank: 1, reason: "Combina com o tema sombrio; zona inicial diferente de Orc/Troll."}
+      - {race: troll, rank: 2, reason: "Racials de priest exclusivas (Hex of Weakness, Shadowguard)."}
+
+  - class_id: priest
+    faction: alliance
+    mode: pvp
+    starting_spec: shadow
+    professions: [tailoring, engineering]
+    ref: *analysis
+    picks:
+      - {race: gnome, rank: 1, key_racials: [confounding_flash, escape_artist], reason: "CC em área exclusivo + Escape Artist."}
+      - {race: human, rank: 2, key_racials: [will_to_survive, feedback], reason: "Trinket grátis + Feedback contra casters."}
+      - {race: night_elf, rank: 3, key_racials: [shadowmeld, elunes_grace], reason: "Shadowmeld e defensivo extra."}
+
+  - class_id: priest
+    faction: alliance
+    mode: pve
+    starting_spec: holy
+    professions: [tailoring, enchanting]
+    ref: *analysis
+    picks:
+      - {race: human, rank: 1, key_racials: [divine_grace, the_human_spirit], reason: "Cooldown de cura forte e Spirit para Holy."}
+      - {race: gnome, rank: 2, key_racials: [contingency_plan, expansive_mind], reason: "Contingency Plan (estilo Guardian Spirit) e +5% mana."}
+      - {race: dwarf, rank: 3, key_racials: [stoneform, desperate_prayer], reason: "Fear Ward virou base; Dwarf deixou de ser obrigatório."}
+
+  - class_id: priest
+    faction: alliance
+    mode: collection
+    starting_spec: shadow
+    professions: [tailoring, enchanting, fishing, cooking]
+    ref: *analysis
+    picks:
+      - {race: gnome, rank: 1, reason: "Gnome Priest é combinação inédita no Forever."}
+      - {race: night_elf, rank: 2, key_racials: [starshards], reason: "Racials de priest exclusivas."}
+
+  # ======================= PALADIN =======================
+  - class_id: paladin
+    faction: horde
+    mode: pvp
+    starting_spec: retribution
+    professions: [mining, blacksmithing]
+    ref: *analysis
+    notes: "Undead é a ÚNICA raça Paladin da Horda no Forever."
+    picks:
+      - {race: undead, rank: 1, key_racials: [will_of_the_forsaken, touch_of_the_grave], reason: "Única opção; WotF é excelente contra fear."}
+
+  - class_id: paladin
+    faction: horde
+    mode: pve
+    starting_spec: holy
+    professions: [mining, blacksmithing]
+    ref: *analysis
+    picks:
+      - {race: undead, rank: 1, key_racials: [touch_of_the_grave, cannibalize], reason: "Única opção na Horda."}
+
+  - class_id: paladin
+    faction: horde
+    mode: collection
+    starting_spec: retribution
+    professions: [mining, blacksmithing, fishing, cooking]
+    ref: *analysis
+    picks:
+      - {race: undead, rank: 1, reason: "Undead Paladin é inédito em qualquer versão de WoW — peça de coleção por si só."}
+
+  - class_id: paladin
+    faction: alliance
+    mode: pvp
+    starting_spec: retribution
+    professions: [mining, blacksmithing]
+    ref: *analysis
+    picks:
+      - {race: human, rank: 1, key_racials: [will_to_survive, perception], reason: "Trinket grátis e detecção de stealth."}
+      - {race: dwarf, rank: 2, key_racials: [stoneform], reason: "Stoneform contra bleeds/venenos e -10% dano físico."}
+
+  - class_id: paladin
+    faction: alliance
+    mode: pve
+    starting_spec: holy
+    professions: [mining, blacksmithing]
+    ref: *analysis
+    picks:
+      - {race: human, rank: 1, key_racials: [ruthless, the_human_spirit], reason: "Ruthless (+1% crit) e The Human Spirit (+10% Spirit, ótimo para Holy)."}
+      - {race: dwarf, rank: 2, key_racials: [artisans_precision, stoneform], reason: "Artisan's Precision (+1% hit) e Stoneform para tank."}
+
+  - class_id: paladin
+    faction: alliance
+    mode: collection
+    starting_spec: retribution
+    professions: [mining, blacksmithing, fishing, cooking]
+    ref: *analysis
+    picks:
+      - {race: dwarf, rank: 1, key_racials: [find_treasure], reason: "Find Treasure ajuda a farmar baús do mundo."}
+      - {race: human, rank: 2, reason: "Estética clássica de Paladin."}

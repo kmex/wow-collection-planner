@@ -1,0 +1,131 @@
+# Racials do WoW: Forever.
+# - "effect" parafraseia os guias; números só aparecem quando um guia os publicou.
+# - cooldown aqui é só referência; o valor exibido vem do tooltip oficial (Warcraft DB), atualizado
+#   pelo botão "Atualizar racials" / `wow-plan update-racials`. Correções de 2026-10-27 vieram dessa fonte.
+# - pvp_value / pve_value (0-3) são AVALIAÇÃO DO APP (confidence: analysis implícita), não dado oficial.
+version: "2026-10-27"
+
+_refs:
+  rb: &rb
+    source: "https://rankedboost.com/world-of-warcraft/forever/race/"
+    last_verified: "2026-10-26"
+    confidence: community
+  wt: &wt
+    source: "https://www.warcrafttavern.com/forever/guides/racial-abilities/"
+    last_verified: "2026-10-26"
+    confidence: guide
+  wt_races: &wt_races
+    source: "https://www.warcrafttavern.com/forever/guides/races/"
+    last_verified: "2026-10-26"
+    confidence: guide
+  bliz: &bliz
+    source: "https://us.forums.blizzard.com/en/wow/t/2360696/7"
+    last_verified: "2026-10-27"
+    confidence: official
+    patch: "lançamento (anunciado 26/10, editado 27/10)"
+  classic_unverified: &classic_unverified
+    source: "Comportamento conhecido do WoW Classic — NÃO verificado no Forever"
+    last_verified: "2026-10-26"
+    confidence: unverified
+
+racials:
+  # ---------------- Dwarf ----------------
+  - {id: stoneform, name: Stoneform, kind: active, cooldown: "3 min", pvp_value: 2, pve_value: 2, ref: *rb,
+     effect: "Remove e bloqueia Bleed/Poison/Disease e reduz dano físico recebido em 10% por 8s."}
+  - {id: find_treasure, name: Find Treasure, kind: active, cooldown: null, pvp_value: 0, pve_value: 1, ref: *wt,
+     effect: "Rastreia tesouros; no Forever combina com outros rastreios e rende mais ao abrir baús.",
+     notes: "Bom para colecionismo/farm de mundo."}
+  - {id: big_game_hunter, name: Big Game Hunter, kind: passive, pvp_value: 0, pve_value: 1, ref: *rb,
+     effect: "+5% de dano contra Bestas."}
+  - {id: chastise, name: Chastise, kind: active, cooldown: null, classes: [priest], pvp_value: 1, pve_value: 1, ref: *wt,
+     effect: "Enraizamento (root) que funciona só em alguns tipos de alvo."}
+  - {id: desperate_prayer, name: Desperate Prayer, kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 1, ref: *wt,
+     effect: "Cura instantânea em si mesmo (cooldown defensivo)."}
+
+  - {id: artisans_precision, name: "Artisan's Precision", kind: passive, pvp_value: 1, pve_value: 2, ref: *bliz,
+     effect: "+1% de chance de acerto (hit) com feitiços e ataques.", notes: "Nova no lançamento; substitui Earth Fury."}
+
+  # ---------------- Gnome ----------------
+  - {id: escape_artist, name: Escape Artist, kind: active, cooldown: null, pvp_value: 3, pve_value: 1, ref: *wt,
+     effect: "Escapa de efeitos que prendem/reduzem movimento (útil em PvP e alguns encontros).",
+     notes: "Valores exatos não publicados para o Forever."}
+  - {id: eureka, name: "Eureka!", kind: active, cooldown: "2 min", pvp_value: 2, pve_value: 2, ref: *rb,
+     effect: "Mage: por 8s, habilidades de dano custam 10% menos mana e causam 10% mais dano. Priest: o mesmo para curas/danos não periódicos."}
+  - {id: expansive_mind, name: Expansive Mind, kind: passive, pvp_value: 1, pve_value: 2, ref: *rb,
+     effect: "Priest/Mage/Warlock: +5% de mana máxima."}
+  - {id: engineering_specialization, name: Engineering Specialization, kind: passive, pvp_value: 1, pve_value: 0, ref: *wt,
+     effect: "Torna a profissão Engineering mais confiável."}
+  - {id: confounding_flash, name: Confounding Flash, kind: active, cooldown: null, classes: [priest], pvp_value: 3, pve_value: 1, ref: *wt,
+     effect: "Controle de grupo em área (AoE CC)."}
+  - {id: contingency_plan, name: Contingency Plan, kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 3, ref: *wt,
+     effect: "Cooldown de cura que salva vidas, comparável ao Guardian Spirit de versões posteriores."}
+
+  # ---------------- Human ----------------
+  - {id: will_to_survive, name: Will to Survive, kind: active, cooldown: null, pvp_value: 3, pve_value: 1, ref: *wt,
+     effect: "Remove instantaneamente todos os atordoamentos (stun) — um 'trinket' anti-stun grátis."}
+  - {id: perception, name: Perception, kind: active, cooldown: null, pvp_value: 2, pve_value: 0, ref: *wt,
+     effect: "Melhora a detecção de unidades furtivas (Rogues, mobs em stealth)."}
+  - {id: ruthless, name: Ruthless, kind: passive, pvp_value: 1, pve_value: 1, ref: *bliz,
+     effect: "+1% de chance de crítico em todos os feitiços e ataques (era 2% no beta)."}
+  - {id: the_human_spirit, name: The Human Spirit, kind: passive, pvp_value: 1, pve_value: 2, ref: *bliz,
+     effect: "+10% de Spirit (era 5% no beta) — sustain e cura para Holy Priest."}
+  - {id: divine_grace, name: Divine Grace, kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 3, ref: *wt,
+     effect: "Cooldown forte de cura; permite reaplicar Power Word: Shield no alvo mais cedo."}
+  - {id: feedback, name: Feedback, kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 0, ref: *wt,
+     effect: "Ataques recebidos queimam mana do atacante e causam dano."}
+
+  # ---------------- Night Elf ----------------
+  - {id: elunes_light, name: "Elune's Light", kind: active, cooldown: "3 min", pvp_value: 2, pve_value: 2, ref: *rb,
+     effect: "+10% de chance de crítico em feitiços e ataques por 15s."}
+  - {id: shadowmeld, name: Shadowmeld, kind: active, cooldown: null, pvp_value: 2, pve_value: 1, ref: *wt, effect: "Furtividade racial; ajuda em PvP e para largar aggro."}
+  - {id: quickness, name: Quickness, kind: passive, pvp_value: 1, pve_value: 1, ref: *rb, effect: "+1% esquiva e +2% de velocidade de movimento."}
+  - {id: wisp_spirit, name: Wisp Spirit, kind: passive, pvp_value: 0, pve_value: 1, ref: *wt, effect: "Corre mais rápido como espírito (ressuscitar mais cedo)."}
+  - {id: elunes_grace, name: "Elune's Grace", kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 1, ref: *wt, effect: "Cooldown defensivo."}
+  - {id: starshards, name: Starshards, kind: active, cooldown: null, classes: [priest], pvp_value: 1, pve_value: 1, ref: *wt, effect: "DoT extra de outra escola mágica."}
+
+  # ---------------- Skyborne ----------------
+  - {id: walk_on_air, name: Walk on Air, kind: active, cooldown: null, pvp_value: 1, pve_value: 0, ref: *wt,
+     effect: "Queda lenta controlável (similar a Slow Fall): evita dano de queda e alcança pontos de difícil acesso."}
+  - {id: read_ley_line, name: Read Leyline, kind: active, cooldown: "2 min", pvp_value: 0, pve_value: 1, ref: *bliz,
+     effect: "+50% de regeneração de vida e mana por 15s. Usada numa Ley Line dá 'Attuned' por 1h (+100%); some ao entrar em raide. Não funciona com Innervate.",
+     notes: "Exclusiva High Order (Aliança). Era +100% no beta."}
+  - {id: skysight, name: Skysight, kind: active, cooldown: "2 min", pvp_value: 2, pve_value: 0, ref: *bliz,
+     effect: "+15% de velocidade por 15s; numa convergência elemental dá 'Charged' por 1h (+30%); some ao entrar em raide.", notes: "Exclusiva Windshaper (Horda)."}
+  - {id: wind_blessed, name: Wind Blessed, kind: passive, pvp_value: 1, pve_value: 1, ref: *bliz, effect: "+2% de Haste (era 3% no beta)."}
+  - {id: elemental_insight, name: Elemental Insight, kind: passive, pvp_value: 0, pve_value: 1, ref: *rb, effect: "+5% de dano contra Elementais."}
+
+  # ---------------- Orc ----------------
+  - {id: blood_fury, name: Blood Fury, kind: active, cooldown: "2 min", pvp_value: 3, pve_value: 3, ref: *bliz,
+     effect: "+10% de Attack Power e Spell Power por 15s. Recarga 2 min (era 3 min no beta)."}
+  - {id: shatter_curse, name: Shatter Curse, kind: active, cooldown: "3 min", pvp_value: 3, pve_value: 1, ref: *rb,
+     effect: "Remove todas as Curses/Banes e reduz o dano mágico recebido em 5% por 8s."}
+  - {id: hardiness, name: Hardiness, kind: passive, pvp_value: 3, pve_value: 0, ref: *wt_races,
+     effect: "Reduz em 20% a duração de atordoamentos (stun) sofridos."}
+
+  - {id: command, name: Command, kind: passive, classes: [hunter, warlock], pvp_value: 1, pve_value: 1, ref: *bliz,
+     effect: "+5% de dano dos pets de Hunter e Warlock.", notes: "Volta no lançamento; substitui Savage."}
+
+  # ---------------- Tauren ----------------
+  - {id: war_stomp, name: War Stomp, kind: active, cooldown: null, pvp_value: 2, pve_value: 1, ref: *wt, effect: "Controle de grupo em área."}
+  - {id: cultivation, name: Cultivation, kind: active, cooldown: null, pvp_value: 0, pve_value: 0, ref: *wt_races, effect: "Duplica nós de erva e permite coletar sem Herbalism."}
+  - {id: plainsrunning, name: Plainsrunning, kind: passive, pvp_value: 1, pve_value: 0, ref: *bliz, effect: "+2% de velocidade a cada 5s andando, até +60%; não afeta mais a montaria."}
+  - {id: endurance, name: Endurance, kind: passive, pvp_value: 2, pve_value: 1, ref: *bliz, effect: "+5% de vida total (o bônus crítico do beta foi removido)."}
+
+  # ---------------- Troll ----------------
+  - {id: berserking, name: Berserking, kind: active, cooldown: "3 min", pvp_value: 2, pve_value: 3, ref: *rb,
+     effect: "+10% de velocidade de conjuração e ataque por 10s."}
+  - {id: rapid_regeneration, name: Rapid Regeneration, kind: active, cooldown: null, pvp_value: 1, pve_value: 1, ref: *wt, effect: "Regeneração de vida rápida (sustain)."}
+  - {id: beast_slaying, name: Beast Slaying, kind: passive, pvp_value: 0, pve_value: 1, ref: *rb, effect: "+5% de dano contra Bestas."}
+  - {id: regeneration, name: Regeneration, kind: passive, pvp_value: 0, pve_value: 1, ref: *wt, effect: "Regeneração passiva de vida (inclusive em combate)."}
+  - {id: hex_of_weakness, name: Hex of Weakness, kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 1, ref: *wt, effect: "Reduz dano e cura feitos pelo alvo."}
+  - {id: shadowguard, name: Shadowguard, kind: active, cooldown: null, classes: [priest], pvp_value: 1, pve_value: 1, ref: *wt, effect: "Dano passivo em quem te ataca (estilo Thorns)."}
+
+  # ---------------- Undead ----------------
+  - {id: will_of_the_forsaken, name: Will of the Forsaken, kind: active, cooldown: null, pvp_value: 3, pve_value: 1, ref: *rb,
+     effect: "Remove instantaneamente todos os efeitos de Charm, Fear e Sleep."}
+  - {id: cannibalize, name: Cannibalize, kind: active, cooldown: null, pvp_value: 0, pve_value: 1, ref: *wt, effect: "Recupera vida/mana consumindo cadáveres (sustain no mundo)."}
+  - {id: underwater_breathing, name: Underwater Breathing, kind: passive, pvp_value: 0, pve_value: 0, ref: *wt, effect: "Respira mais tempo debaixo d'água."}
+  - {id: touch_of_the_grave, name: Touch of the Grave, kind: passive, pvp_value: 2, pve_value: 2, ref: *bliz,
+     effect: "Priest/Mage/Warlock: 30% de chance em feitiços/ataques de drenar até 5% da vida máx. Warrior/Paladin/Rogue: 20% de chance. Recarga interna de 15s (era 25s)."}
+  - {id: dark_sacrifice, name: Dark Sacrifice, kind: active, cooldown: null, classes: [priest], pvp_value: 1, pve_value: 2, ref: *wt, effect: "Troca vida por mana (similar a Life Tap)."}
+  - {id: touch_of_weakness, name: Touch of Weakness, kind: active, cooldown: null, classes: [priest], pvp_value: 2, pve_value: 0, ref: *wt, effect: "Causa dano e reduz o dano causado pelo inimigo."}

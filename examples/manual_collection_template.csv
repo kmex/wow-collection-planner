@@ -1,0 +1,3 @@
+external_source,external_id,name,category,expansion,source,faction,class_restriction,race_restriction,difficulty,priority,seasonal,account_wide,data_source,last_verified,status,progress
+manual,EXEMPLO-1,EXEMPLO — substitua pelo nome real,mounts,forever,Vendor X em Orgrimmar,horde,,,,2,0,,https://link-da-fonte,2026-10-26,missing,
+manual,EXEMPLO-2,EXEMPLO — título de classe,titles,forever,Quest de classe,,mage,,,3,0,,https://link-da-fonte,2026-10-26,in_progress,50

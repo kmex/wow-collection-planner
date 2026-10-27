@@ -1,0 +1,238 @@
+# Profissões do WoW: Forever.
+# Regras: 2 profissões primárias por personagem + Cooking, First Aid e Fishing (secundárias, todos podem ter).
+# Skill máximo 300. Fontes e datas em cada bloco. "class_fit" e "goal_fit" (0-3) são AVALIAÇÃO DO APP.
+version: "2026-10-27"
+
+_refs:
+  wt: &wt
+    source: "https://www.warcrafttavern.com/forever/guides/professions/"
+    last_verified: "2026-10-27"
+    confidence: guide
+  wt_camp: &wt_camp
+    source: "https://www.warcrafttavern.com/forever/guides/camping-objects-buffs/"
+    last_verified: "2026-10-27"
+    confidence: guide
+  rb: &rb
+    source: "https://rankedboost.com/world-of-warcraft/forever/professions/ (página de 2026-10-09)"
+    last_verified: "2026-10-27"
+    confidence: community
+  classic: &classic
+    source: "Conhecimento do WoW Classic — NÃO verificado no Forever"
+    last_verified: "2026-10-27"
+    confidence: unverified
+
+rules:
+  primary_slots: 2
+  secondary: [cooking, first_aid, fishing]
+  max_skill: 300
+  tiers:
+    - {name: Apprentice, min_level: "1 (coleta) / 5 (craft)", skill: "1-75"}
+    - {name: Journeyman, min_level: 10, skill: "50-150"}
+    - {name: Expert, min_level: 20, skill: "125-225"}
+    - {name: Artisan, min_level: 35, skill: "200-300"}
+  notes:
+    - "Não existe mais bônus passivo de profissão: o ganho vem do que você crafta/coleta e dos buffs de acampamento (camping)."
+    - "Buffs de camping não acumulam com o buff da classe equivalente e são um pouco mais fracos (ex.: Kings 10% x camping 8%)."
+    - "Desaprender uma primária (X vermelho na janela de profissões) zera o skill; secundárias não podem ser desaprendidas."
+    - "Legacy talents de profissão: Working Overtime (mais chance de ganhar skill) e Dedicated Study (pontos diários na profissão mais baixa)."
+    - "A missão da zona inicial oferece Mining, Skinning ou Herbalism com +2 de skill."
+  ref: *wt
+
+# O que você pode querer craftar -> profissão que faz
+interests:
+  - {id: bags, label: "Bolsas", by: [tailoring], note: "Tailoring faz bolsas comuns e bolsas de reagente (slot próprio no Forever)."}
+  - {id: elixirs, label: "Elixires", by: [alchemy]}
+  - {id: flasks, label: "Frascos (flasks)", by: [alchemy], note: "O Alchemy Laboratory do camping permite fazer flasks em qualquer lugar."}
+  - {id: mana_potions, label: "Poções de mana", by: [alchemy]}
+  - {id: healing_potions, label: "Poções de cura", by: [first_aid], note: "No Forever as Healing Potions (Minor a Major) saíram de Alchemy e foram para First Aid — qualquer personagem faz."}
+  - {id: transmutes, label: "Transmutações", by: [alchemy]}
+  - {id: enchants, label: "Encantamentos", by: [enchanting]}
+  - {id: wands, label: "Varinhas (wands)", by: [enchanting], note: "Ótimo para Mage/Priest: wands de Enchanting ganharam spell power no Forever."}
+  - {id: relics, label: "Relíquias / idols / totems", by: [enchanting]}
+  - {id: cloth_armor, label: "Armadura de tecido", by: [tailoring]}
+  - {id: leather_armor, label: "Armadura de couro", by: [leatherworking]}
+  - {id: mail_plate, label: "Armadura de malha/placa", by: [blacksmithing, leatherworking]}
+  - {id: weapons, label: "Armas", by: [blacksmithing]}
+  - {id: gadgets_pvp, label: "Engenhocas e explosivos (PvP)", by: [engineering]}
+  - {id: toys, label: "Brinquedos e gadgets divertidos", by: [engineering]}
+  - {id: food, label: "Comida com buff", by: [cooking]}
+  - {id: bandages, label: "Ataduras", by: [first_aid]}
+  - {id: gathering_gold, label: "Coletar e vender (ouro)", by: [herbalism, mining, skinning]}
+
+pairs:
+  - {a: alchemy, b: herbalism, bonus: 3, why: "Herbalism dá quase todo o material de Alchemy."}
+  - {a: tailoring, b: enchanting, bonus: 3, why: "Tecido vem de mobs (não precisa coletar) e o que você crafta vira material ao desencantar."}
+  - {a: blacksmithing, b: mining, bonus: 3, why: "Mining fornece barras e pedras para Blacksmithing."}
+  - {a: engineering, b: mining, bonus: 3, why: "Mining fornece metal e pedras para Engineering."}
+  - {a: leatherworking, b: skinning, bonus: 3, why: "Skinning fornece o couro de Leatherworking."}
+  - {a: tailoring, b: alchemy, bonus: 1, why: "Tecido não precisa de coleta; ervas você compra no leilão ou recebe de outro personagem."}
+  - {a: herbalism, b: mining, bonus: 1, why: "Dupla de coleta: máximo de ouro, nenhum craft."}
+
+professions:
+  - id: alchemy
+    name: Alchemy
+    kind: primary
+    role: crafting
+    crafts: [elixirs, flasks, mana_potions, transmutes]
+    gatherer: herbalism
+    class_fit: {mage: 1, priest: 2, paladin: 1}
+    goal_fit: {pvp: 1, pve: 3, collection: 1}
+    forever:
+      - "67 receitas novas (3 mudaram de cor/qualidade)."
+      - "As 6 Healing Potions (Minor a Major) agora são de First Aid."
+      - "Novas: Minor Arcane Elixir (spell power em nível baixo), Elixir of the Grizzly (Força + crit), Elixir of Cunning (Agilidade + Intelecto); Rage Potion agora serve para Druid."
+      - "Frascos de vidro (Empty, Leaded, Imbued, Crystal Vial) vendidos em pilhas de 5."
+    camp: {t1: "Mana Well — regen de mana (tipo Blessing of Wisdom)", t2: "Fermenter — reagentes especiais", t3: "Alchemy Laboratory — craft de flasks em qualquer lugar"}
+    refs: [*wt, *rb, *wt_camp]
+    alchemy_source: "https://www.warcrafttavern.com/forever/guides/alchemy/"
+
+  - id: herbalism
+    name: Herbalism
+    kind: primary
+    role: gathering
+    crafts: [gathering_gold]
+    class_fit: {mage: 1, priest: 1, paladin: 1}
+    goal_fit: {pvp: 0, pve: 1, collection: 1}
+    forever:
+      - "Sem mudanças de coleta listadas; Tauren com Cultivation colhe ervas sem Herbalism (e dobra com ela)."
+    camp: {t1: "Incense Candle — Intelecto (tipo Arcane Intellect)", t2: "Greenhouse — planta sementes e vira ervas", t3: "Seed Hybridizer — multiplica sementes ou troca por raras"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: tailoring
+    name: Tailoring
+    kind: primary
+    role: crafting
+    crafts: [bags, cloth_armor]
+    gatherer: null
+    class_fit: {mage: 3, priest: 3, paladin: 0}
+    goal_fit: {pvp: 1, pve: 2, collection: 2}
+    forever:
+      - "176 receitas novas (208 mudaram de cor/qualidade)."
+      - "Red Linen Bag agora tem 8 slots (era 6)."
+      - "Novas bolsas para o slot de reagentes: Linen Reagent Bag e Woolen Reagent Bag."
+      - "Peças de caster com spell power: Azure Silk Hood, Reinforced/Double-stitched Woolen Shoulders, Filigreed Shadow Gown/Leggings (drop em dungeons baixas) e itens Shadow/Frost/Holy/Arcane/Fire via Azeroth Commerce Authority."
+      - "Tecido vem de humanoides: Linen 1-19, Wool 15-30, Silk 26-40, Mageweave 41-50, Runecloth 51-60, Felcloth 50-60 (demônios)."
+    camp: {t1: "Faction Banner — Spirit (tipo Divine Spirit)", t2: "Spinning Wheel — materiais", t3: "Loom — alguns moldes exigem"}
+    refs: [*wt, *rb, *wt_camp]
+    tailoring_source: "https://www.warcrafttavern.com/forever/guides/tailoring/"
+
+  - id: enchanting
+    name: Enchanting
+    kind: primary
+    role: crafting
+    crafts: [enchants, wands, relics]
+    gatherer: null
+    class_fit: {mage: 2, priest: 2, paladin: 1}
+    goal_fit: {pvp: 1, pve: 2, collection: 1}
+    forever:
+      - "60 receitas novas."
+      - "Novice's Practice Wand no skill 1; Lesser e Greater Magic Wand agora têm spell power a partir do nível 5."
+      - "Agora faz relíquias, idols e totems (ex.: Polished Driftwood Icon, Mystic Mushroom, Tenets of the Silver Hand)."
+      - "Caster: Enchant Necklace – Spell Power e – Healing Power; armas novas como Glimmering Staff e Orb of Mystic Insight."
+    camp: {t1: "Enchanted Lute — atributos e resistências (tipo Mark of the Wild)", t2: "Arcane Salvager — melhora o Disenchant", t3: "Arcane Forge — algumas fórmulas"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: engineering
+    name: Engineering
+    kind: primary
+    role: crafting
+    crafts: [gadgets_pvp, toys]
+    gatherer: mining
+    class_fit: {mage: 2, priest: 1, paladin: 1}
+    goal_fit: {pvp: 3, pve: 1, collection: 2}
+    forever:
+      - "73 receitas novas."
+      - "Explosivos 'Saf T' (Saf T Dynamite, Saf T Copper Bomb) podem ser usados por quem não é engenheiro — dá para vender."
+      - "Satchel of Copper Bombs vai no slot de arremesso e não usa munição; Clanking Cord (cinto) tem versão para cada tipo de armadura."
+      - "Especialização Gnomish ou Goblin a partir de 200, por cadeia de missões; trocar exige desaprender e upar de novo."
+      - "Gnome tem Engineering Specialization: menos falhas de gadgets."
+      - "No Classic, Engineering é a profissão de PvP (granadas, redes, iscas) — confirme quais gadgets continuam no Forever."
+    camp: {t1: "Reagent Bot — vende reagentes (sem buff)", t2: "Repair Bot — conserto e venda", t3: "Anarchist's Workbench — esquemas avançados"}
+    refs: [*wt, *rb, *wt_camp, *classic]
+
+  - id: mining
+    name: Mining
+    kind: primary
+    role: gathering
+    crafts: [gathering_gold]
+    class_fit: {mage: 0, priest: 0, paladin: 2}
+    goal_fit: {pvp: 0, pve: 1, collection: 0}
+    forever:
+      - "2 fundições novas: Azerothium e Heavy Thorium."
+    camp: {t1: "Lodestone — Attack Power (tipo Blessing of Might)", t2: "Rock Garden — gera um nó de minério comum", t3: "Molten Foundry — fundições especiais"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: blacksmithing
+    name: Blacksmithing
+    kind: primary
+    role: crafting
+    crafts: [mail_plate, weapons]
+    gatherer: mining
+    class_fit: {mage: 0, priest: 0, paladin: 3}
+    goal_fit: {pvp: 1, pve: 2, collection: 1}
+    forever:
+      - "194 receitas novas (184 mudaram de cor/qualidade)."
+    camp: {t1: "Sharpening Wheel — Força (tipo Strength of Earth Totem)", t2: "Anvil — crafta moldes onde você acampar", t3: "Master Forge — moldes avançados"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: leatherworking
+    name: Leatherworking
+    kind: primary
+    role: crafting
+    crafts: [leather_armor, mail_plate]
+    gatherer: skinning
+    class_fit: {mage: 0, priest: 0, paladin: 1}
+    goal_fit: {pvp: 1, pve: 1, collection: 1}
+    forever:
+      - "267 receitas novas (198 mudaram de cor/qualidade) — a profissão que mais ganhou receitas."
+    camp: {t1: "Camp Tent — dá Rested XP (5% de um nível) se você não tiver nenhuma; recarga de 1h", t2: "Tanning Rack — materiais", t3: "Sewing Machine — moldes avançados"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: skinning
+    name: Skinning
+    kind: primary
+    role: gathering
+    crafts: [gathering_gold]
+    class_fit: {mage: 0, priest: 0, paladin: 1}
+    goal_fit: {pvp: 0, pve: 0, collection: 0}
+    forever:
+      - "Sem mudanças de coleta listadas."
+    camp: {t1: "Camp Chair — crit (tipo Moonkin Aura / Leader of the Pack)", t2: "Field Guide — mostra bestas no minimapa", t3: "Trapper's Workbench — armadilha"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: cooking
+    name: Cooking
+    kind: secondary
+    role: crafting
+    crafts: [food]
+    class_fit: {mage: 1, priest: 1, paladin: 1}
+    goal_fit: {pvp: 1, pve: 2, collection: 1}
+    forever:
+      - "37 receitas novas."
+      - "As fogueiras do camping (Basic, Journeyman, Expert) sustentam 3, 5 e 10 objetos de acampamento."
+    camp: {t1: "Basic Campfire — base do acampamento e fogo de cozinha", t2: "Cookie's Feast — buff de Stamina", t3: "Iron Oven — receitas avançadas"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: first_aid
+    name: First Aid
+    kind: secondary
+    role: crafting
+    crafts: [bandages, healing_potions]
+    class_fit: {mage: 2, priest: 1, paladin: 1}
+    goal_fit: {pvp: 2, pve: 1, collection: 0}
+    forever:
+      - "8 receitas novas + as Healing Potions (Minor a Major) vindas de Alchemy."
+    camp: {t1: "First Aid Kit — Stamina (tipo Power Word: Fortitude)", t2: "Toxin Study — poções de cura e anti-veneno", t3: "Plague Doctor's Laboratory — poções e cataplasmas"}
+    refs: [*wt, *rb, *wt_camp]
+
+  - id: fishing
+    name: Fishing
+    kind: secondary
+    role: gathering
+    crafts: [gathering_gold]
+    class_fit: {mage: 1, priest: 1, paladin: 1}
+    goal_fit: {pvp: 0, pve: 1, collection: 2}
+    forever:
+      - "Caixas (crates) podem ter rolos de tecido e equipamento para desencantar; mariscos dão pérolas."
+    camp: {t1: "Fish Bowl — todos os atributos (tipo Blessing of Kings)", t2: "Fishing Rack — iscas e peixes incomuns", t3: "Fishing Hut — iscas e peixes raros"}
+    refs: [*wt, *rb, *wt_camp]

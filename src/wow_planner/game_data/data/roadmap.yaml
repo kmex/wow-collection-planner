@@ -1,0 +1,58 @@
+# Roadmap padrão de mains e alts do jogador.
+version: "2026-10-26"
+
+_refs:
+  plan: &plan
+    source: "Plano informado pelo jogador + análise do app"
+    last_verified: "2026-10-26"
+    confidence: analysis
+
+roadmap:
+  - order: 1
+    title: "Main: Mage Horda — PvP com amigos"
+    class_id: mage
+    faction: horde
+    mode: pvp
+    candidate_races: [undead, orc, troll]
+    ref: *plan
+    risks:
+      - "Reputações de cidade e montarias raciais são da facção: progresso de Horda não conta para um personagem da Aliança."
+      - "Mage Skyborne NÃO existe na Horda (Windshaper Skyborne = Shaman)."
+
+  - order: 2
+    title: "Mage High Order Skyborne (Aliança) — PvE"
+    class_id: mage
+    faction: alliance
+    mode: pve
+    candidate_races: [skyborne_high_order, gnome, human]
+    condition: "Somente se você decidir trocar de facção / fazer um segundo Mage na Aliança."
+    ref: *plan
+    risks:
+      - "Skyborne exige compra do Skyborne Heroic Pack, Epic Pack ou Warcraft Forever Collection."
+      - "Seus amigos estão na Horda: na Aliança vocês não agrupam (exceto chat Skyborne cross-faction)."
+      - "Mage Skyborne tem nota geral B nos guias, contra S do Gnome — escolha estética x números."
+      - "Quanto da coleção é compartilhado na conta entre facções no Forever ainda NÃO foi verificado (veja README)."
+
+  - order: 3
+    title: "Alt: Priest"
+    class_id: priest
+    faction: horde
+    mode: pve
+    candidate_races: [troll, undead]
+    condition: "Facção padrão = Horda (com os amigos); a versão Aliança aparece logo abaixo para comparação."
+    compare_factions: true
+    ref: *plan
+    risks:
+      - "Horda tem só 2 raças de Priest (Undead, Troll); Aliança tem 4."
+
+  - order: 4
+    title: "Alt: Paladin"
+    class_id: paladin
+    faction: horde
+    mode: pve
+    candidate_races: [undead]
+    condition: "Na Horda a única opção é Undead Paladin (inédito). Na Aliança: Human ou Dwarf."
+    compare_factions: true
+    ref: *plan
+    risks:
+      - "Combinação nova: guias e tier lists de Undead Paladin ainda são especulativos até o lançamento."

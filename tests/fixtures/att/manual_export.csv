@@ -1,0 +1,6 @@
+id;Name;type;collected;faction;source
+9001;Lobo Simulado;mount;1;horde;Vendor (simulado)
+9002;Galestrider Simulado;mount;0;alliance;Reputação (simulado)
+9003;Pet Simulado;battlepet;sim;;Drop (simulado)
+;Sem ID;mount;1;;
+9004;Categoria Estranha;foobar;0;;
